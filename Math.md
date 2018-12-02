@@ -2,6 +2,7 @@
 
 
 ### 1. largest common factor
+    - if a or b is zero, we return non-zero elements, because everything divides zero
 ```
 public int gcd(int a, int b) { 
     // Everything divides 0  
