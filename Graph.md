@@ -11,3 +11,16 @@
   - if the state is not visited and also valid, we add it to queue.
   - if we find one which is valid, we simply return
   
+  
+  
+  
+### 2. DFS
+
+## 2. Bipartite Graph
+- practise: LC 886, LC 785
+- scenarios: we are forced to divide a group into two, each sub group of the elements are contradicted with another one.
+  we will be given a set of relations representing the contradictory
+- main steps: 
+  - create graph, representing relations i -> [j]
+  - dfs marking colors for elements
+  - if there exists contradictory, means impossible partition.
