@@ -12,7 +12,7 @@
       
       
       
- ### substring match
+ ### 2. substring match
  
  - scenario 1: substring concatenated with all words in a dictionary
   - practise: LC30, LC97
@@ -57,8 +57,13 @@
     ```
  
  
- ### offset match
+ ### 3. offset match
  
  - scenario 1: we can shift string to make them alike, keep in mind that 'ba' and 'az' are actually the same.
  
  
+ ### 4. alphabetic order
+ 
+ - scenario 1: delete string columns to make them sorted
+ - practise: 944, 955
+  - greedy search, we only need to check for strings that are not sorted (for new columns) 
