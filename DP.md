@@ -1,10 +1,34 @@
 
 
-### 1. possibility
+### 1. probabilities
 - practise: LC837 21 GAME
-  - maintaining a k size window and dp array store the probability up to current state.
-  - if window size larger than k, substract the size previous
-  - if size larger than limit, substract the window larger than limit
+  - maintaining a k size window and dp array store the probability **up to current state**.
+  - if window size larger than k, substract the previous total probability
+  - if size is larger than limit, substract the window larger than limit
+  ```
+      double new21Game(int N, int K, int W) {
+        if(K == 0) return 1;
+        int maxval = K+W+1;
+        vector<double> dp(maxval-1, 0);
+        dp[0] = 1;
+        for(int i = 1;i <= N;i++) {
+            dp[i] = dp[i-1];
+            if(i <= W) {
+                dp[i] += dp[i-1]/W;
+            }else if(i > W) {
+                dp[i] += (dp[i-1] - dp[i-W-1])/W;
+            }
+            if(i >= K) {
+                dp[i] -= (dp[i-1]-dp[K-1])/W;
+            }
+        }
+        return dp[N] - dp[K-1];
+    }
+  ```
+
+ - practise: LC688 chess
+  - we need to give the probability of the chess still on the board after k moves.
+  - remember, for the knight, each move is 1/8, we can do a forward dp and check the possibility of arrival at each point on the chessboard after k moves;
 
 
 
@@ -78,5 +102,32 @@
   ```
     
     
-    
+ ### 4. knapsack problems
+ 1. 
+ 2. multi-dimensional knapsack  
+  - practise: 879. Profitable Schemes
+    - we have two dimension constraints(with diff direction constrains). we are required to count the number of combinations that have gang member numbers smaller than G and total profit at least P
+    - We don't really care about the profit in this case - we only need to care about the group constrains. 
+    - An optimization is that we are filling the dp array from bottom right to top left. This can reduce the space from N3 to N2. if we doing dp forward, we need to use another tmp array to store new values and replace the original one.
+    ```
+    public int profitableSchemes(int G, int P, int[] group, int[] profit) {
+        int[][] dp = new int[P+1][G+1];
+        dp[0][0] = 1;
+        int mod = 1000000007;
+        for(int k = 0;k < group.length;k++) {
+            int g = group[k], p = profit[k];
+            for(int i = P;i >= 0;i--) {
+                for(int j = G-g;j >= 0;j--) {
+                    dp[Math.min(P, i+p)][j+g] = (dp[Math.min(P, i+p)][j+g]+dp[i][j])%mod;
+                }
+            }
+        }
+        int total = 0;
+        
+        for(int i: dp[P]) {
+            total = (total+i)%mod;
+        } 
+        return total;
+    }
+    ```
     
