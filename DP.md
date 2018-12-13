@@ -103,8 +103,44 @@
     
     
  ### 4. knapsack problems
- 1. 
- 2. multi-dimensional knapsack  
+ 1. 0 - 1 knapsack
+ - In this kinds of problems, we can only use an item 0 or 1 time, while under the constrains of the total capacity.
+ - In 0-1 knapsack problems, we prefer fill our array from very back. This can save extra space when running the loop.
+  - practise: 416. Partition Equal Subset Sum
+    - we need to check if the array can be partitioned into two identical sum
+    ```
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int a: nums) sum += a;
+        if(sum%2!=0) return false;
+        vector<bool> dp(sum/2+1, false);
+        dp[0] = true;
+        for(int i: nums) {
+            for(int j = dp.size()-1;j >=i;j--) {
+                if(dp[j]) continue;
+                dp[j] = dp[j-i];
+            }
+        }
+        return dp[dp.size()-1];
+    }
+    ```
+    
+ 2. 0-inf knapsack
+ - In this kinds of problems, we usually loop from start. Because we can use up an item up to inf times, it's safe to add on prev values
+ ```
+ int change(int amount, vector<int>& coins) {
+        vector<int> dp(amount+1, 0);
+        dp[0] = 1;
+        for(int c: coins) {
+            for(int i = c;i < amount+1;i++) {
+                dp[i]+= dp[i-c];
+            }
+        }
+        return dp[amount];
+    }
+ ```
+    
+ 3. multi-dimensional knapsack  
   - practise: 879. Profitable Schemes
     - we have two dimension constraints(with diff direction constrains). we are required to count the number of combinations that have gang member numbers smaller than G and total profit at least P
     - We don't really care about the profit in this case - we only need to care about the group constrains. 
