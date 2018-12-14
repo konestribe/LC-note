@@ -188,6 +188,32 @@
         return Math.max(Math.max(buy1, buy2),Math.max(sell1, sell2));
     }
   ```
+ 2. followup: at most k transactions
+ - diff with prev case, we need to use tmp dp array to store elements, and compute it along with stock price array.
+ - An interesting optimization is that we add a quick solver. The solver is compressing the dp calculation. if we find we can have transaction numbers larger than half length of the input stock price, we can simply sum up all increasing trend inside our stock price array.
+ ```
+ public int maxProfit(int k, int[] prices) {
+        if(k > prices.length/2) return quickSolve(prices, k);
+        int[][] dp = new int[k+1][2];// dp0 is buy, dp1 is sell
+        for(int i = 0;i < dp.length;i++) dp[i][0] = Integer.MIN_VALUE;
+        for(int i = 0;i < prices.length;i++) {
+            int[][] tmp = new int[k+1][2];
+            for(int j = 1;j < tmp.length;j++) {
+                tmp[j][0] = Math.max(dp[j][0], dp[j-1][1]-prices[i]);
+                tmp[j][1] = Math.max(dp[j][1], dp[j][0] + prices[i]);
+            }
+            dp = tmp;
+        }
+        return Math.max(dp[k][0], dp[k][1]);
+    }
+    public int quickSolve(int[] prices, int k) {
+        int sum = 0;
+        for(int i = 1;i < prices.length;i++) {
+            if(prices[i] > prices[i-1]) sum +=prices[i] - prices[i-1];
+        }
+        return sum;
+    }
+ ```
 
 
 
