@@ -167,3 +167,27 @@
     }
     ```
     
+### 5. dp with multiple choice for a state
+1. 2 stage stock price
+  - we can finish at most two total transactions. 
+  - we can only hold one transaction at a time.
+  - remember there are dependencies between two stages(ex. you can only buy second after you sell first)
+  - we can use this relations to construct dp. the status transfer is listed below. We are tracking the day end with buy1/2 or sell1/2
+  ```
+  public int maxProfit(int[] prices) {
+        //trace status with buy 1 and buy 2, sell 1 and sell 2
+        int buy1 = Integer.MIN_VALUE, buy2 = buy1;
+        int sell1 = 0, sell2 = sell1;
+        for(int price: prices) {
+            int newBuy1 = Math.max(buy1, 0 - price);
+            int newSell1 = Math.max(sell1, buy1 + price);
+            int newBuy2 = Math.max(buy2, sell1 - price);
+            int newSell2 = Math.max(sell2, buy2 + price);
+            buy1 = newBuy1;buy2 = newBuy2;sell1 = newSell1;sell2 = newSell2;
+        }
+        return Math.max(Math.max(buy1, buy2),Math.max(sell1, sell2));
+    }
+  ```
+
+
+
