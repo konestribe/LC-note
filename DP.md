@@ -216,4 +216,32 @@
  ```
 
 
-
+### ** status transferring practise
+- key point of dp problems is to find the status transferring functions. Below are several good examples to for you to get the idea.
+- practise 1: LC920 number of music playlist
+  - In this question we have three parameters: 
+    - L(the total number of songs need to be played)
+    - N(unique songs can be chosen by users)
+    - K(minimum interval for the same song to be played)
+  - we need to give out total number of scheme that can be used to construct the playlist
+  - status transferring function:
+    - form dp[L][N], where L is the number of songs, N is the unique number of songs
+    - there are two different cases when there is a new song being played: the song is an old song or it is a brand new song
+    - for the later one we have: dp[i][j] += dp[i-1][j-1]*(N-j+1); //for the new song we have (n-j+1) num of choice
+    - for the former one we have: dp[i][j] += dp[i-1][j]*j; //for the old song we have j num of choice
+    - if considering interval k, we should adjust our last status transferring function: dp[i][j] += dp[i-1][j]*(j-k);
+    ```
+    public int numMusicPlaylists(int N, int L, int K) {
+        long[][] dp = new long[L+1][N+1]; //store num of songs for totally L songs and N choice
+        long mod = (long)1e9+7;
+        dp[0][0] = 1;
+        for(int i = 1;i < L+1;i++) {
+            for(int j = 1;j < N+1;j++) {
+                dp[i][j] = (dp[i-1][j-1]*(N - j + 1)+dp[i][j])%mod; // song is a new song
+                if(j >= K) dp[i][j] = (dp[i-1][j]*(j-K) + dp[i][j])%mod;
+                dp[i][j] %= mod;
+            }
+        }
+        return (int)dp[L][N];
+    }
+    ```
