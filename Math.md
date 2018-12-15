@@ -21,6 +21,12 @@ public int gcd(int a, int b) {
     return gcd(a, b-a); 
  } 
 ```
+- oneline solution:
+```
+public int gcd(int a, int b) {
+    return b > 0?gcd(a % b):a;
+}
+```
 
 
 ### 2. rectangle area sum
