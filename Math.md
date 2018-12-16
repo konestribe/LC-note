@@ -51,3 +51,54 @@ public int minAreaRect(int[][] points) {
         return ret == Integer.MAX_VALUE?0:ret;
     }
 ```
+
+### 3. rectangle idea: scaling
+#### 3.1 scale up
+- some times we can think about signifying the properties of the each rectangle to simplify our coding purpose
+- practise lc959:
+    - In a N x N grid composed of 1 x 1 squares, each 1 x 1 square consists of a /, \, or blank space.  These characters divide the square into contiguous regions.
+(Note that backslash characters are escaped, so a \ is represented as "\\".)
+Return the number of regions.
+    - we can think about enlarge previous 1x1 sub rectangle into 3x3. The reason 2x2 is not applicable is that we need to take care of diagonal cases when splitting as 2x2.
+    - after scaling up, the question become pure union find/dfs
+```
+class Solution {
+    int[][] direct = new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    public void dfs(int[][] grid, int i, int j) {
+        grid[i][j] = 1;
+        for(int k = 0;k < 4;k++) {
+            int r = direct[k][0]+i;
+            int c = direct[k][1]+j;
+            if(r<0||r>=grid.length||c<0||c>=grid.length||grid[r][c]==1) continue;
+            dfs(grid, r, c);
+        }
+    }
+    public int regionsBySlashes(String[] s) {
+        int n = s.length, ret = 0;
+        int[][] grid = new int[n*3][n*3];
+        for(int i = 0;i < s.length;i++) {
+            for(int j = 0;j < s[0].length();j++) {
+                char cur = s[i].charAt(j);
+                if(cur == ' ') continue;
+                if(cur == '/') {
+                    grid[i*3][j*3+2] = 1;
+                    grid[i*3+1][j*3+1] = 1;
+                    grid[i*3+2][j*3] = 1;
+                }else{
+                    grid[i*3][j*3] = 1;
+                    grid[i*3+1][j*3+1] = 1;
+                    grid[i*3+2][j*3+2] = 1;
+                }
+            }
+        }
+        for(int i = 0;i < 3*n;i++) {
+            for(int j = 0;j < 3*n;j++) {
+                if(grid[i][j] == 1) continue;
+                ret++;
+                dfs(grid, i, j);
+            }
+        }
+        return ret;
+    }
+}
+```
