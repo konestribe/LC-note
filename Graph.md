@@ -24,3 +24,41 @@
   - create graph, representing relations i -> [j]
   - dfs marking colors for elements
   - if there exists contradictory, means impossible partition.
+
+
+
+### 3. Union Find
+- practise 685: redundant connection 2
+- scenario
+  - we are given a directed graph, we need to find last invalid edge to delete to make graph a valid tree.
+  - remember there will only be one possible ways
+- idea:
+  - we can find out there are two kinds of invalid edge, one is loop(which is the same with RC1), another is dup parent issue.
+  - we use three pointers to track the possible invalid status. An important point: if we find dop parent issue, we will assume first ndoe is valid and going along so if we find issues later it means our assumption is false;
+  ```
+  public int[] findRedundantDirectedConnection(int[][] edges) {
+        int[] fst = null, scd = null, loop = null;
+        int[] root = new int[edges.length+1];
+        for(int i = 1;i < root.length;i++) root[i] = i;
+        for(int[] edge: edges) {
+            int rt1 = find(edge[0], root), rt2 = find(edge[1], root);
+            if(rt1 == rt2) {
+                loop = edge;
+            }else{
+                if(rt2 == edge[1]) {//means not two parent issue, valid ongoing
+                    root[edge[1]] = edge[0];
+                }else{ //we did not change existing relationship, means we assume we need to delete scd
+                    fst = new int[]{root[edge[1]], edge[1]};
+                    scd = edge;
+                }
+            }
+        }
+        if(scd == null) return loop;
+        if(loop == null) return scd;
+        return fst;
+    }
+    public int find(int edge, int[] root) {
+        while(root[edge] != edge) edge = root[edge];
+        return edge;
+    }
+  ```
