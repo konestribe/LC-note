@@ -15,7 +15,37 @@
   
   
 ### 2. DFS
-
+  - practise: LC 99 recover bst
+  - scenario: two nodes are swapped by mistake. We need to adjust the seq of two nodes to make it valid
+  - main steps:
+    - if we use extra space, we can actually run an inorder tranverse, we will just know the wrong nodes position and adjust their values
+    - if we want to finish it in constant space, we need to know prev and cur nodes to make judgement:
+  ```
+  class Solution {
+    TreeNode fst = null, scd = null, prev = new TreeNode(Integer.MIN_VALUE);
+    public void recoverTree(TreeNode root) {
+        tranverse(root);
+        int tmp = fst.val;
+        fst.val = scd.val;
+        scd.val = tmp;
+        return;
+    }
+    public void tranverse(TreeNode node) {
+        if(node == null) return;
+        tranverse(node.left);
+        if(node.val < prev.val) {
+            if(fst == null) {
+                fst = prev;
+                scd = node;
+            }else{
+                scd = node;
+            }
+        }
+        prev = node;
+        tranverse(node.right);
+    }
+}
+  ```
 ## 2. Bipartite Graph
 - practise: LC 886, LC 785
 - scenarios: we are forced to divide a group into two, each sub group of the elements are contradicted with another one.
