@@ -55,6 +55,25 @@
   - dfs marking colors for elements
   - if there exists contradictory, means impossible partition.
 
+- practise: LC 968
+- SCENARIO: we need to place cameras to cover itself and nearby nodes. A greedy approach is that for leaf nodes, we can always make sure that it's better to place camera on the parents of it.
+```
+class Solution {
+    int ret = 0;
+    public int minCameraCover(TreeNode root) {
+        return (dfs(root)<1?1:0)+ret;
+    }
+    public int dfs(TreeNode node) {//0 means leaf, 1 means parent of leaf, 2 means covered
+        int left = node.left==null?2:dfs(node.left);
+        int right = node.right == null?2:dfs(node.right);
+        if(left==0||right==0) {
+            ret++;
+            return 1;
+        }
+        return (left==1||right==1)?2:0;
+    }
+}
+```
 
 
 ### 3. Union Find
