@@ -67,3 +67,10 @@
  - scenario 1: delete string columns to make them sorted
  - practise: 944, 955
   - greedy search, we only need to check for strings that are not sorted (for new columns) 
+
+
+
+
+#### optimization
+  - using trie to substitute set
+  - usually combined with dfs, provide early termination properties.
