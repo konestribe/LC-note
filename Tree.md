@@ -65,3 +65,39 @@ public class Solution {
         }
     }
 ```
+### 3. serialize / deserialize BST
+- LC 449
+- unlike s/ds bt, we need to make this structure as compact as possible. An observation is that BST is self-order contained, which means we don't need to use NULL value to indicate endleaves. Instead, we can use lower/upper bound to constrain the rebuild process.
+```
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        helperBuild(root, sb);
+        return sb.toString();
+    }
+    public void helperBuild(TreeNode node, StringBuilder sb) {
+        if(node == null) return;
+        sb.append(" ").append(node.val);
+        helperBuild(node.left, sb);
+        helperBuild(node.right, sb);
+    }
+    int pt = 1;
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] nd = data.split(" ");
+        return buildTree(nd, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+    public TreeNode buildTree(String[] nd, int min, int max) {
+        if(pt == nd.length) return null;
+        int val = Integer.parseInt(nd[pt]);
+        if(val <= min || val >= max) return null;
+        TreeNode cur = new TreeNode(val);
+        pt++;
+        cur.left = buildTree(nd, min, val);
+        cur.right = buildTree(nd, val, max);
+        return cur;
+    }
+}
+```
