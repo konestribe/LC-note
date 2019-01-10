@@ -214,7 +214,50 @@
         return sum;
     }
  ```
-
+ 
+### 6. Longest Increasing Subsequence
+- we will be given an array of elements. we need to return the largest length of possible subsequence that is increasing
+- solution1: O(n2) trivial
+  - by tracking the longest length of subseq that can be formed by index i, we can get the final answer by two loop
+  ```
+  public int lengthOfLIS(int[] nums) {
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        int ret = 0;
+        for(int i = 0;i < nums.length;i++) {
+            for(int j = 0;j < i;j++) {
+                if(nums[j] < nums[i]) {
+                    dp[i] = Math.max(dp[i], dp[j]+1);
+                }
+            }
+            ret = Math.max(ret, dp[i]);
+        }
+        return ret;
+    }
+  ```
+- solution2: O(nlogn) 
+  - We use an array to store the last value of this length of subseq (dp[2] stores the value of last element in subseq with length of 2)
+    - think about seq: 1 2 9 4, when we are adding 4, 9 will be overwriten because it is already invalid(seq end with 9 is always valid if end with 4)
+  - when updating the array, we can either update it to be a new length(larger than all length of elements) or update an existing index
+  ```
+  public int lengthOfLIS(int[] nums) {
+        int[] tail = new int[nums.length];
+        int size = 0;
+        for(int i = 0;i < nums.length;i++) {
+            int idx = Arrays.binarySearch(tail, 0, size, nums[i]);
+            if(idx < 0) {
+                if(idx*-1-1 == size) { //we are appending a new length
+                    tail[size++] = nums[i];
+                } else { // we are updating an existing length
+                    tail[idx*-1-1] = nums[i];
+                }
+            }else{
+                tail[idx] = nums[i];
+            }
+        }
+        return size;
+    }
+  ```
 
 ### ** status transferring practise
 - key point of dp problems is to find the status transferring functions. Below are several good examples to for you to get the idea.
