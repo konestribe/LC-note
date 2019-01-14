@@ -102,3 +102,21 @@ class Solution {
     }
 }
 ```
+
+### 4. calculate triangle area by three vertex
+- LC 812
+```
+    public double largestTriangleArea(int[][] points) {
+        double ret = 0;
+        for(int i = 0;i < points.length;i++) {
+            for(int j = i+1;j < points.length;j++) {
+                for(int k = j+1;k < points.length;k++) {
+                    int[] a = points[i], b = points[j], c = points[k];
+                    double area = 0.5*Math.abs(a[0]*b[1]+b[0]*c[1]+c[0]*a[1]-b[0]*a[1] - b[1]*c[0] - c[1]*a[0]);
+                    ret = Math.max(ret, area);
+                }
+            }
+        }
+        return ret;
+    }
+```
