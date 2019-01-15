@@ -25,5 +25,14 @@
         }
         return ret;
     }
-}
+  }
   ```
+
+### 2. concurrent topk query
+- we will be given a system with incoming query(text documents)
+- we need to return top k frequent query at any given time
+- scenario:
+  - heap is very useful in this scenario. More specifically, we will need a minHeap to record top k.
+  - problem is: how can we update it if we directly storing text documents inside the heap?
+  - we need another Hashmap to store text->count of the documents
+  - we can just compare the peek value of this minHeap to decide whether we should update the heap based on current text
