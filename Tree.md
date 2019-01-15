@@ -103,3 +103,31 @@ public class Codec {
 ```
 
 ### 4. morris tranversal
+- inorder morris:
+  - we use two pointers to finish O(1) time coplexity traversal
+```
+public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        TreeNode cur = root, prev = null;
+        while(cur != null) {
+            if(cur.left != null) {
+                prev = cur.left;
+                while(prev.right != null && prev.right != cur) {
+                    prev = prev.right;
+                }
+                if(prev.right == null) {
+                    prev.right = cur;
+                    cur = cur.left;
+                }else {
+                    list.add(cur.val);
+                    prev.right = null;
+                    cur = cur.right;
+                }
+            }else{
+                list.add(cur.val);
+                cur = cur.right;
+            }
+        }
+        return list;
+    }
+```     
