@@ -73,3 +73,39 @@ class Solution {
     }
 }
 ```
+
+
+### 3. min stack optimal solution
+- trivially we can store tuple into stack, with each element contains value itself and the current global minimal value.
+- However, we can actually store global minimum only when we need to. Whenever we encountered a new global minimum, we can push previous minimum and update it, so that when we are popping elements out, we can reset previous minimumif we already reach the current global minimum
+```
+class MinStack {
+
+    /** initialize your data structure here. */
+    Stack<Integer> stack;
+    int min = Integer.MAX_VALUE;
+    public MinStack() {
+        stack = new Stack();
+    }
+    
+    public void push(int x) {
+        if(x <= min) {
+            stack.push(min);
+            min = x;
+        }
+        stack.push(x);
+    }
+    
+    public void pop() {
+        if(stack.pop() == min) min = stack.pop();
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int getMin() {
+        return min;
+    }
+}
+```
