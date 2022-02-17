@@ -11,7 +11,7 @@ Unlike DP, which is to track possible intermediate transitions, greedy can only 
    - We know if we running out of one char, if all visited char has been used, then we can partition all previous visited elements
    - We track count of a char, and subtract it when slicing the window. We add visited char to a set
    - If one char has been used up, if set is empty, we know all previous existed char has been used up. This is the greedy condition for this question
-   ```
+   ```java
    public List<Integer> partitionLabels(String s) {
         int[] cnt = new int[26]; //count of letter
         for(int i = 0; i < s.length(); i++) {
@@ -42,7 +42,7 @@ Unlike DP, which is to track possible intermediate transitions, greedy can only 
     - For string `abbabc`, when we first visit a, we know it's last index is 3, which means we at least need to move to 3 to split the array.
     - When we move to second char b, we know we need to move to it's last index 4 to split array, as Max(3, 4) = 4;
     - Until we reach to that max index, we can split the array and guarantee this max index cover all previous char's max index
-  ```
+  ```java
   public List<Integer> partitionLabels(String s) {
         int[] last = new int[26];
         for(int i = 0; i < s.length(); i++) {
