@@ -47,7 +47,33 @@ Unlike DP, which is to track possible intermediate transitions, greedy can only 
         return max >= nums.length-1;
     }
    ```
+### LC 45 jump game 2
+  - practise: [link](https://leetcode.com/problems/jump-game-ii/)
+  - Solution:
+    - This time instead for asking whether we can reach, we should compute minimal steps
+    - Still, based on moving max, we know from a certain index, we can reach `[i. i+num[i]]` values. Those are the possible landing point for our next jump.
+    - Meahwhile, for each point within above range, we can track a furthest index a next jump can reach. In that case we can guarantee/define the scope for next jump.
+    - The greedy constrain is for `[i, i+num[i]]` and its `max(b+b[i])`, b within `[i, i+num[i]]`, no matter which landing point we choose (between i and i + num[i]), in next jump we can always reach to at most b+b[i] index.
+   ```java
+       public int jump(int[] nums) {
+        int end = 0; 
+        int curMax = 0;
+        int jump = 0;
+        for(int i = 0; i < nums.length-1; i++) {
+            curMax = Math.max(curMax, i + nums[i]);
+            if(end == i) { // indicating we evaluated this jump's all possible intermediate step
+                jump++;
+                end = curMax;
+            }
+        }
+        return jump;
+    }
+   ```
 
+
+
+
+-------------------------------------------------------
 
 ## Array slicing window
 ### LC 763. Partition Labels
