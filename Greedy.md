@@ -107,4 +107,49 @@ Unlike DP, which is to track possible intermediate transitions, greedy can only 
         return list;
     }
    ```
--
+ -------------------------------------------------------
+ 
+ ## Using stack to track previous optmized greedy condition
+ Stack often being used together with greedy, as last-in-first-out property can be utilized to store intermediate optimized condition. By stacking intermediate optimized state, we can stack up to final optimized solution
+ ### 402. Remove K Digits
+  - Practise: [link](https://leetcode.com/problems/remove-k-digits/)
+  - Solution:
+    -  By removing k digits, making the remaining integer max. The greedy condition would be always removing large integers from beginning. For instance, by looking `1,2,3,4,2`, we know 4 should be removed to make integer optimized. Thus a stack storing increasing digits would be the greedy condition.
+    -  Remember to handle corner cases such as string with all `0`.
+    ```java
+        public String removeKdigits(String num, int k) {
+        // from left to right, if find peak, remove it
+        Stack<Character> stack = new Stack<>();
+        int pt = 0;
+        while(pt < num.length()) {
+            char cur = num.charAt(pt++);
+            while(!stack.isEmpty() && cur < stack.peek() && k > 0) {
+                stack.pop();
+                k--;
+            }
+            stack.push(cur);
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()) {
+            char cur = stack.pop();
+            if(k > 0) {                
+                k--;
+            } else{
+                sb.append(cur);
+            }
+        }
+
+        int j = sb.length()-1;
+        while(j >= 0) {
+            if(sb.charAt(j) != '0') {
+                sb.setLength(j+1);
+                break;
+            }
+            j--;
+        }
+        if(j < 0) return "0";
+        return sb.reverse().toString();
+    }
+    ```
+ 
+
