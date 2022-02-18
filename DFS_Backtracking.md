@@ -34,3 +34,14 @@ We should purely using DFS to traverse the whole number set.
         }
     }
     ```
+    
+----------------------------------------------------------------------
+## DFS early termination criteria
+
+Under the impression, DFS by default will take up O(2^n) time complexity, as we go over each possible solutions. As a result, DFS usualy combined with early termination criteria, most often would be preventing visiting same scenario more than once. There are certain scenarios we need to think about 
+
+### LC 909. Snakes and Ladders
+ - Practise: [link](https://leetcode.com/problems/snakes-and-ladders/)
+ - Solution
+   - Even this is BFS, we also need early termination methods. In this example, we should allow revisit the location that directly visited by rolling dices instead of using ladder or snake. This is based on requirement: we only take ladder/snake once in one move. 
+
