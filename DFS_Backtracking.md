@@ -6,6 +6,13 @@ We will be focusing on different special usage of DFS.
 ## Backtracking recording all possible combinations
 For questions asking for all combinations, DP will be less prior as dp will neglect intermediate state, which is required under this scenario.
 We should purely using DFS to traverse the whole number set.
+The high level workflow for this kind of question would be:
+ - Adjusting input
+   - In some cases we need to preprocessing the candidate list, such as sort it. For example, if you need to dedup and candidate contains same elements, we should sort it beforehand.
+ - Creating tracker for visited elements
+   - Sometimes if we are required all permutations, we can start the tracking from anywhere. In that case we should be using a visit set
+ - DFS
+   - Exit criteria would be running out of the whole list. Remember to add intermediate results to the final set.
 
 ### 78. Subsets
   - Practise: [link](https://leetcode.com/problems/subsets/)
