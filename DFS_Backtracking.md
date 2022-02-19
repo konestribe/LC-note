@@ -13,6 +13,8 @@ The high level workflow for this kind of question would be:
    - Sometimes if we are required all permutations, we can start the tracking from anywhere. In that case we should be using a visit set
  - DFS
    - Exit criteria would be running out of the whole list. Remember to add intermediate results to the final set.
+   - **Deduplication**
+     - We usually dedup by sorting elements beforehands, and prevent visiting same value in the same layer
 
 ### 78. Subsets
   - Practise: [link](https://leetcode.com/problems/subsets/)
@@ -38,6 +40,38 @@ The high level workflow for this kind of question would be:
             list.add(nums[i]);
             dfs(nums, ret, i+1, list);
             list.remove(list.size() - 1);
+        }
+    }
+    ```
+    
+ ### 47. Permutations II
+  - Practise: [link](https://leetcode.com/problems/permutations-ii/)
+  - Solution
+    - **Deduplication**
+     - We usually dedup by sorting elements beforehands, and prevent visiting same value in the same layer
+    ```java
+        public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        boolean[] visited = new boolean[nums.length];
+        List<List<Integer>> ret = new ArrayList<>();
+        dfs(nums, ret, visited, new ArrayList<>());
+        return ret;
+    }
+    
+    private void dfs(int[] nums, List<List<Integer>> ret, boolean[] visited, List<Integer> list) {
+        if(list.size() == nums.length) {
+            ret.add(new ArrayList<>(list));
+            return;
+        }
+        int prev = -20;
+        for(int i = 0; i < nums.length; i++) {
+            if(visited[i] || prev == nums[i]) continue;
+            prev = nums[i];
+            visited[i] = true;
+            list.add(nums[i]);
+            dfs(nums, ret, visited, list);
+            list.remove(list.size()-1);
+            visited[i] = false;
         }
     }
     ```
