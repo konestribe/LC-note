@@ -15,6 +15,7 @@ The high level workflow for this kind of question would be:
    - Exit criteria would be running out of the whole list. Remember to add intermediate results to the final set.
    - **Deduplication**
      - We usually dedup by sorting elements beforehands, and prevent visiting same value in the same layer
+     - ex: `int prev = -1;`  and then inside for loop: `if(prev == c[i]) continue;`
 
 ### 78. Subsets
   - Practise: [link](https://leetcode.com/problems/subsets/)
