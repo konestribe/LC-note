@@ -1,4 +1,4 @@
-#String
+# String
 
 ## non-continous substring with optimized condition
 If question is not asking for contiguous substring, when it comes to optimized conditions, we can think about below data structures
