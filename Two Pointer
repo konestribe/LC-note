@@ -1,6 +1,0 @@
-# Two Pointer
-Two pointer usually used for greedy questions. There are couple different scenarios, but all of them require some "stack-like" solutions, discarding previous completed state by manipulating pointers and moving forward.
-
-## Moving pointers from both side
-This kinds of question usually asks max/min area covered by index combination. We should be utilizing some conditions to discard some part of area scanned by 1 pointer until both of them reach.
-###
