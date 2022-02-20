@@ -1,4 +1,44 @@
+#String
 
+## non-continous substring with optimized condition
+If question is not asking for contiguous substring, when it comes to optimized conditions, we can think about below data structures
+ - Stack: stack can hold intermediate results **in sequence** based on certain criteria. 
+### LC Smallest Subsequence of Distinct Characters
+ - Practise: [link](https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/)
+ - Solutions:
+   - Given a string s, return the lexicographically smallest subsequence of s that contains all the distinct characters of s exactly once. For example, "cbacdcbc" -> "acdb"
+   - We know there are couple hard criteria we need to apply for characters
+     - If we figure out we are inserting a char after a larger char, and if larger char have further locations in the string, we can discard previous one, as according to greedy condition, this will always be true
+     - If this is the last occurrence for this char, we should anyway keep it in the string
+   - Based on above two facts, we can use stack to hold intermediate results
+   ```java
+   public String smallestSubsequence(String text) {
+        Stack<Character> stack = new Stack<>();
+        int[] carray = new int[26];
+        boolean[] visited = new boolean[26];
+        for(char c: text.toCharArray()) {
+            carray[c-'a']++;
+        }
+        for(char c: text.toCharArray()) {
+            carray[c-'a']--;
+            if(visited[c-'a']) continue;
+            while(!stack.isEmpty() && stack.peek() > c && carray[stack.peek()-'a'] > 0) {
+                visited[stack.pop()-'a'] = false;
+            }
+            stack.push(c);
+            visited[c-'a'] = true;
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()) sb.append(stack.pop());
+        return sb.reverse().toString();
+    }
+   ```
+
+
+
+
+<Below are notes before 2022>
+---------------------------------------------------------------------------------------------------------------------
 ### 1. palidrome
 - practise: LC5(lps)
 - scenario:
