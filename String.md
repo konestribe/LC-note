@@ -1,5 +1,45 @@
 # String
 
+## String transformation with unique char
+If we have constrains that each char only occur once, we can use bit set to hash string and record their status. For string transformations, we should consider using set and by manipulating original string, we check if transformation target exists
+### 2135. Count Words Obtained After Adding a Letter
+ - Practise: [link](https://leetcode.com/problems/count-words-obtained-after-adding-a-letter/)
+ - Similar question: [link](https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/)
+ ```java
+ public int wordCount(String[] startWords, String[] targetWords) {
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        int ret = 0;
+        //construct startWords
+        for(String s: startWords) {
+            map.computeIfAbsent(s.length(), x -> new HashSet<>());
+            map.get(s.length()).add(getBinary(s));
+        }
+        
+        for(String s: targetWords) {
+            if(!map.containsKey(s.length()-1)) continue;
+            Set<Integer> targetSet = map.get(s.length()-1);
+            int val = getBinary(s);
+            for(int i = 0; i < 26; i++) {
+                if( ((val >> i) & 1) == 0) continue;
+                // int updatedVal = val
+                if(targetSet.contains(val ^ (1 << i))) {
+                    ret++;
+                    break;
+                }
+            }
+        }
+        return ret;
+    }
+    
+    private int getBinary(String s) {
+        int ret = 0;
+        for(char c: s.toCharArray()) {
+            ret |= 1 << (c-'a');
+        }
+        return ret;
+    }
+ ```
+
 ## Longest Increasing substring
 Finding longest increasing substring. Intuitively, we can O(n^2) with dp to search longest substring length for each index. However, there is another O(nlogn) solution by memorizing the substring length with tail. The tail string is proved to be increasing
  - Practise" [link](https://leetcode.com/problems/longest-increasing-subsequence/)
