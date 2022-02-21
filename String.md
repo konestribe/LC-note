@@ -1,5 +1,31 @@
 # String
 
+## Longest Increasing substring
+Finding longest increasing substring. Intuitively, we can O(n^2) with dp to search longest substring length for each index. However, there is another O(nlogn) solution by memorizing the substring length with tail. The tail string is proved to be increasing
+ - Practise" [link](https://leetcode.com/problems/longest-increasing-subsequence/)
+ - Solution:
+ ```java
+     public int lengthOfLIS(int[] nums) {
+        // An array called tail, index represents sub seq length, value indicates the smallest tail for subarray with this length
+        int size = 0;
+        int[] tail = new int[nums.length];
+        for(int num: nums) {
+            int pt = Arrays.binarySearch(tail, 0, size, num);
+            if (pt < 0) {
+                int insertion = -1 * pt - 1;
+                if(insertion >= size) {
+                    tail[insertion] = num;
+                    size ++;
+                } else{
+                    tail[insertion] = num;
+                }
+            }
+            // print(tail);
+        }
+        return size;
+    }
+ ```
+
 ## non-continous substring with optimized condition
 If question is not asking for contiguous substring, when it comes to optimized conditions, we can think about below data structures
  - Stack: stack can hold intermediate results **in sequence** based on certain criteria. 
