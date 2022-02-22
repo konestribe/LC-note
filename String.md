@@ -39,6 +39,7 @@ If we have constrains that each char only occur once, we can use bit set to hash
         return ret;
     }
  ```
+-----------------------------------------------------------------------------
 
 ## Longest Increasing substring
 Finding longest increasing substring. Intuitively, we can O(n^2) with dp to search longest substring length for each index. However, there is another O(nlogn) solution by memorizing the substring length with tail. The tail string is proved to be increasing
@@ -66,6 +67,7 @@ Finding longest increasing substring. Intuitively, we can O(n^2) with dp to sear
     }
  ```
 
+-----------------------------------------------------------------------------
 ## non-continous substring with optimized condition
 If question is not asking for contiguous substring, when it comes to optimized conditions, we can think about below data structures
  - Stack: stack can hold intermediate results **in sequence** based on certain criteria. 
