@@ -1,8 +1,7 @@
-# String
 
-## String transformation with unique char
+# 1 String transformation with unique char
 If we have constrains that each char only occur once, we can use bit set to hash string and record their status. For string transformations, we should consider using set and by manipulating original string, we check if transformation target exists
-### 2135. Count Words Obtained After Adding a Letter
+## 1.1 Count Words Obtained After Adding a Letter
  - Practise: [link](https://leetcode.com/problems/count-words-obtained-after-adding-a-letter/)
  - Similar question: [link](https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/)
  ```java
@@ -41,7 +40,7 @@ If we have constrains that each char only occur once, we can use bit set to hash
  ```
 -----------------------------------------------------------------------------
 
-## Longest Increasing substring
+# 2. Longest Increasing substring
 Finding longest increasing substring. Intuitively, we can O(n^2) with dp to search longest substring length for each index. However, there is another O(nlogn) solution by memorizing the substring length with tail. The tail string is proved to be increasing
  - Practise" [link](https://leetcode.com/problems/longest-increasing-subsequence/)
  - Solution:
@@ -68,10 +67,10 @@ Finding longest increasing substring. Intuitively, we can O(n^2) with dp to sear
  ```
 
 -----------------------------------------------------------------------------
-## non-continous substring with optimized condition
+# 3. non-continous substring with optimized condition
 If question is not asking for contiguous substring, when it comes to optimized conditions, we can think about below data structures
  - Stack: stack can hold intermediate results **in sequence** based on certain criteria. 
-### LC Smallest Subsequence of Distinct Characters
+## 3.1 LC Smallest Subsequence of Distinct Characters
  - Practise: [link](https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/)
  - Solutions:
    - Given a string s, return the lexicographically smallest subsequence of s that contains all the distinct characters of s exactly once. For example, "cbacdcbc" -> "acdb"
@@ -102,14 +101,14 @@ If question is not asking for contiguous substring, when it comes to optimized c
     }
    ```
 -----------------------------------------------------------------------------
-## Palidrome
+# 4. Palidrome
 Strings with below properties:
  1. Strings are symmetrical from both side
  2. Strings that can be split into char pairs with mostly even count, with at most 1 pair to be odd
  3. Strings with middle element leftalone if odd, or no middle element if even
-### Constructing palidrome without array order
+## 4.1 Constructing palidrome without array order
 If we are asked to construct palidrome without string order, we should consider tracking their pairs(**Based on criteria 2**). Left-alone char should be classified to a single group, while pair of char could be 1 or 2 group. As no order is required, we can utilize `int[26]` to count occurence
-#### 1400. Construct K Palindrome Strings
+### 4.1.1 Construct K Palindrome Strings
  - [link](https://leetcode.com/problems/construct-k-palindrome-strings/)
  ```java
      public boolean canConstruct(String s, int k) {
@@ -128,15 +127,15 @@ If we are asked to construct palidrome without string order, we should consider 
         return k >= odd && k <= s.length();
     }
  ```
- ### Constructing palidrome with array order
+ ## 4.2 Constructing palidrome with array order
  If we need to consider ordered substring, only counting occurrence will not be sufficient. Instead, we should consider **property 1**, also consider checking its first and last index, to narrow the search range. Meanwhile, as we has fixed number of alpha numbers, the time complexity multiplier would be O(26) == O(1), which will contribute to a O(n) solution
-#### 1930. Unique Length-3 Palindromic Subsequences
+### 4.2.1 Unique Length-3 Palindromic Subsequences
  - [link](https://leetcode.com/problems/unique-length-3-palindromic-subsequences/)
  - We are asked to construct palidrome with length of 3 from a string. We cannot modify char sequence but can choose non-continuous char: `For example, "ace" is a subsequence of "abcde".`
  - Solution
    - We track first and last index for each char.
    - Then for each char, we potentially loop the string, check uniq char in between, and contributing to final answer.
-#### 1616. Split Two Strings to Make Palindrome
+### 4.2.2 Split Two Strings to Make Palindrome
  - [link](https://leetcode.com/problems/split-two-strings-to-make-palindrome/)
  - Solution
    - For two strings with same length, we need to take an index and construct `a(prefix)+b(suffix)` or `b(prefix)+a(suffix)`. return true if we can construct a palidrome
