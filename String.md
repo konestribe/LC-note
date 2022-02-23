@@ -126,6 +126,14 @@ If we are asked to construct palidrome without string order, we should consider 
         return k >= odd && k <= s.length();
     }
  ```
+ ### Constructing palidrome with array order
+ If we need to consider ordered substring, only counting occurrence will not be sufficient. Instead, we can consider checking its first and last index, to narrow the search range. Meanwhile, as we has fixed number of alpha numbers, the time complexity multiplier would be O(26) == O(1), which will contribute to a O(n) solution
+#### 1930. Unique Length-3 Palindromic Subsequences
+ - [link](https://leetcode.com/problems/unique-length-3-palindromic-subsequences/)
+ - We are asked to construct palidrome with length of 3 from a string. We cannot modify char sequence but can choose non-continuous char: `For example, "ace" is a subsequence of "abcde".`
+ - Solution
+   - We track first and last index for each char.
+   - Then for each char, we potentially loop the string, check uniq char in between, and contributing to final answer.
 
 
 
