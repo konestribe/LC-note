@@ -101,7 +101,31 @@ If question is not asking for contiguous substring, when it comes to optimized c
         return sb.reverse().toString();
     }
    ```
-
+-----------------------------------------------------------------------------
+## Palidrome
+Strings that are symmetrically equal. Usually there are two scenarios, even length and odd length. 
+ - When defining / constructing palidrome, we usually use **Two Pointers**, based on middle, spread to both side
+### Constructing palidrome without array order
+If we are asked to construct palidrome without string order, we should consider tracking their pairs. Left-alone char should be classified to a single group, while pair of char could be 1 or 2 group. As no order is required, we can utilize `int[26]` to count occurence
+#### 1400. Construct K Palindrome Strings
+ - [link](https://leetcode.com/problems/construct-k-palindrome-strings/)
+ ```java
+     public boolean canConstruct(String s, int k) {
+        int[] arr = new int[26];
+        for(char c: s.toCharArray()) {
+            arr[c - 'a'] ++;
+        }
+        int odd = 0;
+        int pair = 0;
+        for(int i = 0; i < 26; i++) {
+            if(arr[i] % 2 == 1) {
+                odd++;
+                pair += arr[i]/2;
+            }
+        }
+        return k >= odd && k <= s.length();
+    }
+ ```
 
 
 
