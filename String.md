@@ -103,10 +103,12 @@ If question is not asking for contiguous substring, when it comes to optimized c
    ```
 -----------------------------------------------------------------------------
 ## Palidrome
-Strings that are symmetrically equal. Usually there are two scenarios, even length and odd length. 
- - When defining / constructing palidrome, we usually use **Two Pointers**, based on middle, spread to both side
+Strings with below properties:
+ 1. Strings are symmetrical from both side
+ 2. Strings that can be split into char pairs with mostly even count, with at most 1 pair to be odd
+ 3. Strings with middle element leftalone if odd, or no middle element if even
 ### Constructing palidrome without array order
-If we are asked to construct palidrome without string order, we should consider tracking their pairs. Left-alone char should be classified to a single group, while pair of char could be 1 or 2 group. As no order is required, we can utilize `int[26]` to count occurence
+If we are asked to construct palidrome without string order, we should consider tracking their pairs(**Based on criteria 2**). Left-alone char should be classified to a single group, while pair of char could be 1 or 2 group. As no order is required, we can utilize `int[26]` to count occurence
 #### 1400. Construct K Palindrome Strings
  - [link](https://leetcode.com/problems/construct-k-palindrome-strings/)
  ```java
@@ -127,14 +129,48 @@ If we are asked to construct palidrome without string order, we should consider 
     }
  ```
  ### Constructing palidrome with array order
- If we need to consider ordered substring, only counting occurrence will not be sufficient. Instead, we can consider checking its first and last index, to narrow the search range. Meanwhile, as we has fixed number of alpha numbers, the time complexity multiplier would be O(26) == O(1), which will contribute to a O(n) solution
+ If we need to consider ordered substring, only counting occurrence will not be sufficient. Instead, we should consider **property 1**, also consider checking its first and last index, to narrow the search range. Meanwhile, as we has fixed number of alpha numbers, the time complexity multiplier would be O(26) == O(1), which will contribute to a O(n) solution
 #### 1930. Unique Length-3 Palindromic Subsequences
  - [link](https://leetcode.com/problems/unique-length-3-palindromic-subsequences/)
  - We are asked to construct palidrome with length of 3 from a string. We cannot modify char sequence but can choose non-continuous char: `For example, "ace" is a subsequence of "abcde".`
  - Solution
    - We track first and last index for each char.
    - Then for each char, we potentially loop the string, check uniq char in between, and contributing to final answer.
-
+#### 1616. Split Two Strings to Make Palindrome
+ - [link](https://leetcode.com/problems/split-two-strings-to-make-palindrome/)
+ - Solution
+   - For two strings with same length, we need to take an index and construct `a(prefix)+b(suffix)` or `b(prefix)+a(suffix)`. return true if we can construct a palidrome
+   - Trivial solution would be taking each index, scan both string and check if it's a palidrome. This will make an O(n^2) solution
+   - One level deeper, by considering **Property 1**, if string can be palidrome, then there should be certain length from a's prefix and from b's suffix to be the same. 
+   - Based on this criteria, we can traverse the rest of the part if necessary to decide if this is a palidrome.
+   ```java
+    public boolean checkPalindromeFormation(String a, String b) {
+        return checkMatch(a, b) || checkMatch(b, a);
+    }
+    
+    private boolean checkMatch(String a, String b) {
+        int n = a.length();
+        int pt = 0;
+        while(pt < n) {
+            if(pt > n/2 - 1) return true;
+            if(a.charAt(pt) == b.charAt(n-1-pt)) {
+                pt++;
+                continue;
+            }
+            break;
+        }
+        int ed = n - 1 - pt;
+        return isPalidrome(a, pt, ed) || isPalidrome(b, pt, ed);
+    }
+    
+    private boolean isPalidrome(String s, int st, int ed) {
+        while(st < ed) {
+            if(s.charAt(st++) == s.charAt(ed--)) continue;
+            return false;
+        }
+        return true;
+    }
+   ```
 
 
 <Below are notes before 2022>
