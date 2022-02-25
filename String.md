@@ -170,6 +170,34 @@ If we are asked to construct palidrome without string order, we should consider 
         return true;
     }
    ```
+---------------------------------------------------------------------------------------------------------------------
+## 5. Substring match
+We will be asking if there are any string match can be made from a candidate list. There will be couple different thoughts
+ 1. Replacing each bit with 26 options (if all lower case)
+   - This is considered O(26) constant, as we check possibility of each bit at most 26 times
+ 2. We evaluate bit by bit, check if pattern string exists in set after removing the bit
+   - We don't really care what is the diff between each string. By neglecting the bit and evaluating the all string, we will find potential match from set.
+### 5.1 1554. Strings Differ by One Character
+ - [link](https://leetcode.com/problems/strings-differ-by-one-character/)
+ - Solution
+   - Using method 2, which is neglecting bit by bit and check string from set
+   ```java
+   public boolean differByOne(String[] dict) {
+        Set<String> set = new HashSet<>();
+        int len = dict[0].length();
+
+        for(int i = 0; i < len; i++) {
+            set.clear();
+            for(String s: dict) {
+                char[] arr = s.toCharArray();
+                arr[i] = '.';
+                if(!set.add(String.valueOf(arr))) return true;             
+            }
+        }
+        return false;
+    }
+   ```
+
 
 
 <Below are notes before 2022>
