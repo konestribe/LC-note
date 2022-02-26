@@ -111,3 +111,17 @@ class Solution {
         return edge;
     }
   ```
+  
+  ## Topological Sort
+  Need prerequisite that graph is with order (DAG). The idea is used for solving below questions
+  - Detecting loop. Circular dependency will be kept in Queue
+  - Identify order for items from queue
+  We use below data structure and process to solve questions
+  - Graph. A graph storing information a -> b, which means a need to be fulfilled before executing b
+  - Indegree array. We use it to track dependencies. If an element has no dependency, we will put it into the queue, which means it can be analyzed as all it's prerequisites have been fulfilled
+  - Queue. We use it to loop through elements that could be analyzed
+  If the queue contains elements when we exit, those will be circular dependent elements
+  Time Complexity:
+  - Same as DFS / BFS, ideally it should be `O(v+e)`, v is the vertex (node) and e is edge(lines). We visit each node and edge exactly once.
+  Practise:
+  - Google tag question: [2115. Find All Possible Recipes from Given Supplies](https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/)
