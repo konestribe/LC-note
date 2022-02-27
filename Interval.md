@@ -101,6 +101,7 @@ Combining intervals is simple. However if we need to insert / remove interval, w
 
 ------------------------------------------------------------------------------------------------------------------------
 <past Note>
+ 
 ### 1. practise: LC218 skyline
   - scenario: we have a list of skyline outline with[xin, xout, height]
   - all we need to do is to check the outline after combination
