@@ -1,6 +1,6 @@
-## Handling interval insertion / deletion with Heap
+## 1. Handling interval insertion / deletion with Heap
 Combining intervals is simple. However if we need to insert / remove interval, we usually need help from special data structure. By using heap, we can auto get best option from heap with O(logn). However, the heap will not achieve O(1) removal, which require other thoughts on data structure
-### Exam room
+### 1.1 Exam room
  - [link](https://leetcode.com/problems/exam-room/)
  - The exam room require us to insert seat at maximum distance with existing seat. Meanwhile, we need to remove the seat which was already taken, and possibly combine intervals
  - Trivially, as for seat api we neede to take the best seat, a heap kindof data structure would be helpful. However, when it comes to remove and merge, the heap won't work (Or performance is not ideal) as heap cannot support O(1)/O(logn) removal. 
@@ -96,6 +96,45 @@ Combining intervals is simple. However if we need to insert / remove interval, w
         tmap.put(cur.seat, cur);
     }
  ```
+### 1.2 CPU scheduler
+We are given list of [start_time, duration] for CPU tasks, need to return order for specific execution order. More specific requirements are (be aware of those before starting to coding):
+ - If cpu is idle, it can pick up any stacking jobs **including the job with current start time**
+ - If cpu is running when a job is scheduling, it will be but into stacking queue
+ - For jobs in the queue, we will execute the job with shortest duration. For same duration we choose smaller index.
+Trivially, we should be utilizing priorityQueue to store stacking jobs. Meanwhile looping through each tasks based on their start_time (which is sorted beforehand)
+```java
+public int[] getOrder(int[][] tasks) {
+        int[][] tsks = new int[tasks.length][3];
+        for(int i = 0; i < tasks.length; i++) {
+            tsks[i] = new int[]{tasks[i][0], tasks[i][1], i};
+        }
+        Arrays.sort(tsks, (a, b) -> { // start time, duration, array Idx
+           return a[0] == b[0] ? a[1] - b[1]: a[0] - b[0]; 
+        });
+        int[] ret = new int[tasks.length];
+        int pt = 0;
+        int curTime = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> { //index, processing time, 
+           return a[1] == b[1] ?  a[0] - b[0]: a[1] - b[1];
+        });
+        for(int[] t: tsks){
+            while(!pq.isEmpty() && curTime < t[0]) {
+                int[] tmp = pq.poll();
+                ret[pt++] = tmp[0];
+                curTime += tmp[1];
+            }
+            if(t[0] > curTime) {
+                curTime = t[0] + t[1];
+                ret[pt++] = t[2];
+            } else{
+                // cannot be processed, stack
+                pq.offer(new int[]{t[2], t[1]});
+            }
+        }
+        while(!pq.isEmpty()) ret[pt++] = pq.poll()[0];
+        return ret;
+    }
+```
 
 
 
