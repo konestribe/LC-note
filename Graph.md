@@ -1,26 +1,17 @@
+Discussing normal data structure / process being used for solving graph related problems
 
-
-### 1. BFS
-
-## 1. calculate minimum step
-- practise
-- scenarios: we will be required to find the minimum step start from position st to ed
-- main steps:
-  - create queue, whenever we add new states onto the queue, we mark the states with visited 
-  - each time we poll from queue, we check the spreading choice of current position. 
-  - if the state is not visited and also valid, we add it to queue.
-  - if we find one which is valid, we simply return
-  
-  
-  
-  
-### 2. DFS
+# 1. BFS
+We usually use BFS tackling questions that are asking for minimal steps / distances. 
+ - BFS is designed to be wide and short. The time complexity in worst case is O(v+e), with v to be vertex(node) and e to be edge(lines connecting node)
+ - For avoiding visiting duplicated steps, we need to think about using set-like data structure storing visited nodes. Remember if we can visit this specific location at previous timestamp, then no need for us to continue traversing from same point in the late future.
+   
+# 2. DFS
+DFS usually used for tracking possibilities (yes or no). It can be used for detecting loop, checking permutations, etc.
+ - DFS is long and narrow. Time complexity is also O(v+e)
+## 2.1 Recover BST
+Two nodes are swapped by mistake. We need to adjust the seq of two nodes to make it valid. If we use extra space, we can actually run an inorder tranverse, we will just know the wrong nodes position and adjust their values. If we want to finish it in constant space, we need to know prev and cur nodes to make judgement
   - practise: LC 99 recover bst
-  - scenario: two nodes are swapped by mistake. We need to adjust the seq of two nodes to make it valid
-  - main steps:
-    - if we use extra space, we can actually run an inorder tranverse, we will just know the wrong nodes position and adjust their values
-    - if we want to finish it in constant space, we need to know prev and cur nodes to make judgement:
-  ```
+  ```java
   class Solution {
     TreeNode fst = null, scd = null, prev = new TreeNode(Integer.MIN_VALUE);
     public void recoverTree(TreeNode root) {
@@ -46,16 +37,12 @@
     }
 }
   ```
-## 2. Bipartite Graph
+## 2.2 Bipartite Graph
+We need to mark graph elements with different color. Naturally we can use DFS to mark value and check if there are conflincts. 
 - practise: LC 886, LC 785
 - scenarios: we are forced to divide a group into two, each sub group of the elements are contradicted with another one.
   we will be given a set of relations representing the contradictory
-- main steps: 
-  - create graph, representing relations i -> [j]
-  - dfs marking colors for elements
-  - if there exists contradictory, means impossible partition.
-
-- practise: LC 968
+- practise: LC 968 [link](https://leetcode.com/problems/binary-tree-cameras/)
 - SCENARIO: we need to place cameras to cover itself and nearby nodes. A greedy approach is that for leaf nodes, we can always make sure that it's better to place camera on the parents of it.
 ```
 class Solution {
@@ -76,15 +63,22 @@ class Solution {
 ```
 
 
-### 3. Union Find
-- practise 685: redundant connection 2
+# 3. Union Find
+Idea is to group nodes into different sections, and track node for each sections. When merging groups, we combine counts(We merge small group into large groups), update head. By pre-computing a Union Find Data structure, the latter query could be optimized to O(1).
+
+**The overall process of creating union find group is**:
+- Creating array / list / map tracking root for each elements. By default each element has root to be themselves.
+- **findRoot() function**. This function is used for finding root of a given element, which is later used for merging. Notice we can have extra path deduction logic in this function. The idea is if `a -> b -> c -> d` with d to be the root, we traverse from a and let each a/b/c/d to point at the root d
+- Merge root. We can use count tracking element counts in each group. The other way out would be direct merge nodes (if having path reduction) as search will always be O(1) in those groups.
+## 3.1 redundant connection 2
+- practise 685: 
 - scenario
   - we are given a directed graph, we need to find last invalid edge to delete to make graph a valid tree.
   - remember there will only be one possible ways
 - idea:
   - we can find out there are two kinds of invalid edge, one is loop(which is the same with RC1), another is dup parent issue.
   - we use three pointers to track the possible invalid status. An important point: if we find dop parent issue, we will assume first ndoe is valid and going along so if we find issues later it means our assumption is false;
-  ```
+  ```java
   public int[] findRedundantDirectedConnection(int[][] edges) {
         int[] fst = null, scd = null, loop = null;
         int[] root = new int[edges.length+1];
@@ -112,7 +106,10 @@ class Solution {
     }
   ```
   
-  ## Topological Sort
+  
+  
+  
+# 4. Topological Sort
   Need prerequisite that graph is with order (DAG). The idea is used for solving below questions
   - Detecting loop. Circular dependency will be kept in Queue
   - Identify order for items from queue
