@@ -4,8 +4,8 @@ We focus on sub optimization, which contribute to global optimization.
 Unlike DP, which is to track possible intermediate transitions, greedy can only have 1 intermediate status, for which is optimized
 
 ---------------
-## [Array slicing window]: Tracking the maximum limit
-### LC 763. Partition Labels
+## 1.[Array slicing window]: Tracking the maximum limit
+### 1.1 LC 763. Partition Labels
  - practise: [link](https://leetcode.com/problems/partition-labels/)
  -  Solution 1:
   -  We know if we reach the last occured index of a char, we used up all of this char and we could potentially split the string. However, how can we make sure all the other chars visited are also used up?
@@ -33,7 +33,7 @@ Unlike DP, which is to track possible intermediate transitions, greedy can only 
         return list;
     }
   ```
-### LC 55 jump game
+### 1.2 LC 55 jump game
  - practise: [link](https://leetcode.com/problems/jump-game/)
  - Solution:
    - If for `d[i] = j`, we know for index range [i, i+j], we can all visit. Thus, we just need to continue updating the max limit. Until we reach to an index which `d[i] = i`, we know this is the maximum range that we can reach.
@@ -47,7 +47,7 @@ Unlike DP, which is to track possible intermediate transitions, greedy can only 
         return max >= nums.length-1;
     }
    ```
-### LC 45 jump game 2
+### 1.3 LC 45 jump game 2
   - practise: [link](https://leetcode.com/problems/jump-game-ii/)
   - Solution:
     - This time instead for asking whether we can reach, we should compute minimal steps
@@ -75,8 +75,8 @@ Unlike DP, which is to track possible intermediate transitions, greedy can only 
 
 -------------------------------------------------------
 
-## Array slicing window
-### LC 763. Partition Labels
+## 2. Array slicing window
+### 2.1 LC 763. Partition Labels
  - practise: [link](https://leetcode.com/problems/partition-labels/)
  - Solution 1:
    - We know if we running out of one char, if all visited char has been used, then we can partition all previous visited elements
@@ -109,9 +109,9 @@ Unlike DP, which is to track possible intermediate transitions, greedy can only 
    ```
  -------------------------------------------------------
  
- ## Using stack to track previous optmized greedy condition
+ ## 3. Using stack to track previous optmized greedy condition
  Stack often being used together with greedy, as last-in-first-out property can be utilized to store intermediate optimized condition. By stacking intermediate optimized state, we can stack up to final optimized solution
- ### 402. Remove K Digits
+ ### 3.1 402. Remove K Digits
   - Practise: [link](https://leetcode.com/problems/remove-k-digits/)
   - Solution:
     -  By removing k digits, making the remaining integer max. The greedy condition would be always removing large integers from beginning. For instance, by looking `1,2,3,4,2`, we know 4 should be removed to make integer optimized. Thus a stack storing increasing digits would be the greedy condition.
