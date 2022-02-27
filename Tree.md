@@ -1,4 +1,56 @@
+# 1. Level traveresing a tree
+Sometimes, the question set up require us to traverse the tree using level traversing. Usually we just use a queue to first-in-first-out the nodes. However, sometimes we neeed to use Deque to access elements from both side.
+# 1.1 Maximum width of binary tree
+ - [link](https://leetcode.com/problems/maximum-width-of-binary-tree/submissions/)
+ - As we need to know the width of a level, which also might contains bunch of null nodes, DFS is not my top option now (it might work though). Using BFS should be ideal as we have control and visibility for each level by natural.
+ - We use a deque as we neeed to trim leading and trailing empty nodes. Those should be discarded. 
+ - However, for one optimization idea we can have is to instead of listing out all empty nodees, we combine them with value indicating counts. 
+ ```java
+ public int widthOfBinaryTree(TreeNode root) {
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.offer(root);
+        int ret = 0;
+        while(!dq.isEmpty()) {
+            int curSize = 0;
+            boolean firstOccurNxt = false;
+            for(int z = dq.size(); z > 0; z--) {
+                TreeNode cur = dq.pollFirst();
+                if(cur.val > 100) {
+                    curSize += cur.val - 100;
+                    if(firstOccurNxt) {
+                        cur.val = 100 + (cur.val - 100) * 2;
+                        dq.offer(cur);
+                    }
+                } else{
+                    curSize++;
+                    if(cur.left == null) {
+                        if(firstOccurNxt) {
+                            dq.offer(new TreeNode(101));
+                        }
+                    } else{
+                        firstOccurNxt = true;
+                        dq.offer(cur.left);
+                    }
+                    if(cur.right == null) {
+                        if(firstOccurNxt) {
+                            dq.offer(new TreeNode(101));
+                        }
+                    } else{
+                        firstOccurNxt = true;
+                        dq.offer(cur.right);
+                    }
+                }
+            }
+            ret = Math.max(ret, curSize);
+            while(!dq.isEmpty() && dq.peekLast().val > 100) {
+                dq.pollLast();
+            }
+        }
+        return ret;
+    }
+ ```
 
+----------------------------------------------------------------------------------------------------
 
 ### 1. complete binary tree
 - practise: LC 222
