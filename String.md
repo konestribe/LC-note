@@ -127,6 +127,41 @@ If we are asked to construct palidrome without string order, we should consider 
         return k >= odd && k <= s.length();
     }
  ```
+### 4.1.2 Can Make Palindrome from Substring 
+ - [link](https://leetcode.com/problems/can-make-palindrome-from-substring/)
+ - we are given queeries with [st, ed, MaxNumOfCharToReplace]. We are allowed to rearrange string after replacements to check if string can be formed as palidrome. 
+ - As we can rearrange the string, we only need to track char count for each interval. After that we can know how many substitutions we need for given interval
+ - Above thoughts will enable a O(mn) solution. If we pre-compute the char diff for the array by O(m), we can make the overall TC to O(n)
+ ```java
+  public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+        int[][] dp = new int[s.length()+1][26];
+        for(int i = 0; i < s.length(); i++) {
+            for(int j = 0; j < 26; j++) {
+                dp[i+1][j] = dp[i][j];
+            }
+            dp[i+1][s.charAt(i) - 'a'] ++;
+        }
+        
+        List<Boolean> ret = new ArrayList<>();
+        for(int[] q: queries) {
+            int st = q[0];
+            int ed = q[1];
+            int k = q[2];
+            int single = 0;
+            
+            for(int i = 0; i < 26; i++) {
+                if((dp[ed+1][i] - dp[st][i])%2 == 1) single++;
+            }
+            // System.out.println(single);
+            if(single > 1) single/=2;
+            else single = 0;
+            ret.add(single <= k);
+        }
+        return ret;
+    }
+ ```
+ 
+ 
  ## 4.2 Constructing palidrome with array order
  If we need to consider ordered substring, only counting occurrence will not be sufficient. Instead, we should consider **property 1**, also consider checking its first and last index, to narrow the search range. Meanwhile, as we has fixed number of alpha numbers, the time complexity multiplier would be O(26) == O(1), which will contribute to a O(n) solution
 ### 4.2.1 Unique Length-3 Palindromic Subsequences
