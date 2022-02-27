@@ -105,7 +105,71 @@ Idea is to group nodes into different sections, and track node for each sections
         return edge;
     }
   ```
-  
+## 3.2 399. Evaluate Division
+ - [link](https://leetcode.com/problems/evaluate-division/)
+ - We are given a list of equations with values, also a list of queries, return query results.
+ - Trivially this is a simple DFS solution. We can construct bi-direction graph, and node will store string and value. TC O(m*(v+e)), m is the query size
+ - However, we notice that we can split nodes into different groups. Within each group we will have all value resolved. Cross group query will result an invalud answer.
+ - By using union find, we can pre-compute all values (with their root information). TC will be Math.max(O(m), O(elog(v)). Based on theory, each "find" take logv with v to be node number. We are evaluating e edges.
+ ```java
+     public double[] calcEquation(List<List<String>> equations, double[] v, List<List<String>> queries) {
+        Map<String, String> roots = new HashMap<>(); // storing roots, key1 's root is val1
+        Map<String, Double> values = new HashMap<>(); // storing string, value
+        for(int i = 0; i < v.length; i++) {
+            String rt = equations.get(i).get(0);
+            String nd = equations.get(i).get(1);
+            double value = v[i];
+            if(!roots.containsKey(rt) && !roots.containsKey(nd)) {
+                // if both not in map, simply update map
+                roots.put(rt, rt); values.put(rt, value);
+                roots.put(nd, rt); values.put(nd, 1.0);
+            } else if(!roots.containsKey(rt)) {
+                // we already calculated div in map
+                String ndRoot = findRoot(nd, roots);
+                roots.put(rt, ndRoot); values.put(rt, value * values.get(nd));
+            } else if(!roots.containsKey(nd)) {
+                // we calculated root before
+                String rtRoot = findRoot(rt, roots);
+                roots.put(nd, rtRoot); values.put(nd, values.get(rt) / value);
+            } else{
+                String rtRoot = findRoot(rt, roots);
+                String ndRoot = findRoot(nd, roots);
+                if(!rtRoot.equals(ndRoot)) {
+                    double factor = values.get(rt) / (values.get(nd) * value);
+                    for(String s: roots.keySet()) {
+                        if(findRoot(s, roots).equals(ndRoot)) values.put(s, values.get(s) * factor);
+                    }
+                    roots.put(ndRoot, rtRoot);
+                }
+            }
+        }
+        
+        double[] ret = new double[queries.size()];
+        for(int i = 0; i < queries.size(); i++) {
+            String rt = queries.get(i).get(0);
+            String nd = queries.get(i).get(1);
+            if(!roots.containsKey(rt) || !roots.containsKey(nd) || !findRoot(rt, roots).equals(findRoot(nd, roots))) {
+                ret[i] = -1;
+            } else{
+                ret[i] = values.get(rt) / values.get(nd);
+            }
+        }
+        return ret;
+    }
+    
+    private String findRoot(String s, Map<String, String> roots) {
+        String pt = s;
+        while(roots.get(pt) != pt) {
+            pt = roots.get(pt);
+        }
+        while(!s.equals(pt)) {
+            String nxtS = roots.get(s);
+            roots.put(s, pt);
+            s = nxtS;
+        }
+        return pt;
+    }
+ ```
   
   
   
