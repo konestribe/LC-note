@@ -27,6 +27,39 @@ Alternatively, we should realize that if each interval has no priority, we can s
         return ret;
     }
  ```
+### 1.2 Merge intervals
+ - [link](https://leetcode.com/problems/merge-intervals/submissions/)
+ - We are given a list of intervals. We need to merge them and return a list of intervals with non-overlapping intervals
+ - We can use treemap strategy. When merging intervals, we take below actions
+   - We use two counters outside of basic loop. `currentNumberOfInterval` (count) and `startIndex` (idx)
+   - we know if count is zero, then we should assign next key as start. We can proof the next key's value should be >= zero.
+   - After applying the value, if the count become zero, we know we just finished an interval, and we should update final answer 
+ ```java
+ public int[][] merge(int[][] intervals) {
+        TreeMap<Integer, Integer> tmap = new TreeMap<>();
+        for(int[] itv: intervals) {
+            tmap.put(itv[0], tmap.getOrDefault(itv[0], 0) + 1);
+            tmap.put(itv[1], tmap.getOrDefault(itv[1], 0) - 1);
+        }
+        
+        List<int[]> list = new ArrayList<>();
+        int count = 0;
+        int st = -1;
+        for(int key: tmap.keySet()) {
+            if(count == 0) st = key;
+            int val = tmap.get(key);
+            count += val;
+            if(count == 0) {
+                list.add(new int[]{st, key});
+            }
+        }
+        int[][] ret = new int[list.size()][2];
+        for(int i = 0; i < ret.length; i++) {
+            ret[i] = list.get(i);
+        }
+        return ret;
+    }
+ ```
 
 
 
