@@ -25,6 +25,7 @@ We can utilize bit count with it's relationship with odd/even
     }
  ```
 
+--------------------------------------------------------------------------------
 
 ### find missing number(one)
 - practise LC268
