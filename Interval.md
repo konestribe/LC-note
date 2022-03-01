@@ -3,6 +3,8 @@ This kind of question will be asking for interval overlap / non overlapped inter
 
 Alternatively, we should realize that if each interval has no priority, we can simply track the merge by tracking number of open intervals. A general option would be:
  - We use **TreeMap** to store index and corresponding action (ex, interval start with value 1, interval end with value -1). As treeMap will by design sorting elements, when traversing, we will just tracking the max overlapping counts
+ - **!!*Scenario that we cannot use TreeMap (when each index is not the same priority)***
+   - When we treat single index legit for start,end. ex: `[3, 3]` We need to manually merge intervals, as if using hashmap, we will be neglecting this index (0 value for key of 3)
 ### 1.1 Meeting Rooms II
  - [link](https://leetcode.com/problems/meeting-rooms-ii/)
  - We are given a list of meetings with start/end. return number of meeting room needed
