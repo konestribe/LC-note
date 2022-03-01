@@ -1,6 +1,34 @@
-## 1. Handling interval insertion / deletion with Heap
+## 1. Check interval overlap, merge intervals
+This kind of question will be asking for interval overlap / non overlapped interval. We might be using heap solving those kinds of interval merging questions, but the solution will not be staightforward. 
+
+Alternatively, we should realize that if each interval has no priority, we can simply track the merge by tracking number of open intervals. A general option would be:
+ - We use **TreeMap** to store index and corresponding action (ex, interval start with value 1, interval end with value -1). As treeMap will by design sorting elements, when traversing, we will just tracking the max overlapping counts
+### 1.1 Meeting Rooms II
+ - [link](https://leetcode.com/problems/meeting-rooms-ii/)
+ - We are given a list of meetings with start/end. return number of meeting room needed
+ ```java
+ public int minMeetingRooms(int[][] intervals) {
+        TreeMap<Integer, Integer> tmap = new TreeMap<>();
+        for(int[] itv: intervals) {
+            tmap.put(itv[0], tmap.getOrDefault(itv[0], 0) + 1);
+            tmap.put(itv[1], tmap.getOrDefault(itv[1], 0) - 1);
+        }
+        int ret = 0;
+        int curCount = 0;
+        // System.out.println(tmap);
+        for(int key: tmap.keySet()) {
+            curCount += tmap.get(key);
+            ret = Math.max(ret, curCount);
+        }
+        return ret;
+    }
+ ```
+
+
+
+## 2. Handling interval insertion / deletion with Heap
 Combining intervals is simple. However if we need to insert / remove interval, we usually need help from special data structure. By using heap, we can auto get best option from heap with O(logn). However, the heap will not achieve O(1) removal, which require other thoughts on data structure
-### 1.1 Exam room
+### 2.1 Exam room
  - [link](https://leetcode.com/problems/exam-room/)
  - The exam room require us to insert seat at maximum distance with existing seat. Meanwhile, we need to remove the seat which was already taken, and possibly combine intervals
  - Trivially, as for seat api we neede to take the best seat, a heap kindof data structure would be helpful. However, when it comes to remove and merge, the heap won't work (Or performance is not ideal) as heap cannot support O(1)/O(logn) removal. 
@@ -96,7 +124,7 @@ Combining intervals is simple. However if we need to insert / remove interval, w
         tmap.put(cur.seat, cur);
     }
  ```
-### 1.2 CPU scheduler
+### 2.2 CPU scheduler
 We are given list of [start_time, duration] for CPU tasks, need to return order for specific execution order. More specific requirements are (be aware of those before starting to coding):
  - If cpu is idle, it can pick up any stacking jobs **including the job with current start time**
  - If cpu is running when a job is scheduling, it will be but into stacking queue
