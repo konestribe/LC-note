@@ -70,6 +70,9 @@ Idea is to group nodes into different sections, and track node for each sections
 - Creating array / list / map tracking root for each elements. By default each element has root to be themselves.
 - **findRoot() function**. This function is used for finding root of a given element, which is later used for merging. Notice we can have extra path deduction logic in this function. The idea is if `a -> b -> c -> d` with d to be the root, we traverse from a and let each a/b/c/d to point at the root d
 - Merge root. We can use count tracking element counts in each group. The other way out would be direct merge nodes (if having path reduction) as search will always be O(1) in those groups.
+
+Time complexity for each find / merge is O(logn), with n to be total number of nodes. For each node group we are actually constructing a tree. Tree search will have time complexity to be O(logn)
+
 ## 3.1 redundant connection 2
 - practise 685: 
 - scenario
