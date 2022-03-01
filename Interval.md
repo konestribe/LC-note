@@ -5,6 +5,7 @@ Alternatively, we should realize that if each interval has no priority, we can s
  - We use **TreeMap** to store index and corresponding action (ex, interval start with value 1, interval end with value -1). As treeMap will by design sorting elements, when traversing, we will just tracking the max overlapping counts
  - **!!*Scenario that we need special handling (when index is the same for start / end)***
    - When we treat single index legit for start,end. ex: `[3, 3]` we should check current open interval. If we have an open interval, we should neglect it. If no open interval, we should treat this [3,3] as standalone interval
+ - Alternatively we can pre sort array, use two pointer to scan two array (withO(n)) to decide intervals. This is little bit hard on implementation but quicker
 
 ### 1.1 Meeting Rooms II
  - [link](https://leetcode.com/problems/meeting-rooms-ii/)
