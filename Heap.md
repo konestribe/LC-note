@@ -43,3 +43,41 @@ Heap is used for sorting elements with pre-assigned order. We can only access el
         return ret;
     }
  ```
+ 
+# 2. 1057. Campus Bikes
+ - [link](https://leetcode.com/problems/campus-bikes/)
+ - We are given w number of worker, n (n >= w) number of bikes. We need to assign bikes to workers, each worker should get bike with minimum distance. If there are conflict, smaller index of worker will have priviledge.
+ - Straightforwardly, we should be using `PriorityQueue` to store all possible distances (with smaller in the top, min-heap). When reading from pq, we check if w/b assigned and assign return list accordingly. The TC will ve O(mnlog(mn)), 
+ - From another thoughts, instead of using a priorityQueue and sort / retrieve it, we can utilize `Bucket Sort`, with bucket to be the distance itself. After computing all values, we read from small distance to large distance, and assign worker / bikes accordingly
+ ```java
+ public int[] assignBikes(int[][] w, int[][] b) {
+        int m = w.length;
+        int n = b.length;
+        List<int[]>[] dis = new List[2000]; // widx, bidx
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                int dist = dist(w, b, i, j);
+                if(dis[dist] == null) dis[dist] = new ArrayList<>();
+                dis[dist].add(new int[]{i, j});
+            }
+        }
+        int[] ret = new int[m];
+        boolean[] bVisited = new boolean[b.length];
+        Arrays.fill(ret, -1);
+        int pt = 0;
+        for(int i = 0; i < 2000; i++) {
+            if(dis[i] == null) continue;
+            for(int[] itv: dis[i]) {
+                if(ret[itv[0]] != -1 || bVisited[itv[1]]) continue;
+                ret[itv[0]] = itv[1];
+                bVisited[itv[1]] = true;
+                if(++pt == ret.length) return ret;
+            }
+        }
+        return ret;
+    }
+    
+    private int dist(int[][] w, int[][] b, int i, int j) {
+        return Math.abs(w[i][0] - b[j][0]) + Math.abs(w[i][1] - b[j][1]);
+    }
+ ```
