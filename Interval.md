@@ -6,6 +6,7 @@ Alternatively, we should realize that if each interval has no priority, we can s
  - **!!*Scenario that we need special handling (when index is the same for start / end)***
    - When we treat single index legit for start,end. ex: `[3, 3]` we should check current open interval. If we have an open interval, we should neglect it. If no open interval, we should treat this [3,3] as standalone interval
  - Alternatively we can pre sort array, use two pointer to scan two array (withO(n)) to decide intervals. This is little bit hard on implementation but quicker
+ - If we figure out the exit condition is not zero count for open interval, we cannot apply this strategy. For example, [this question](https://leetcode.com/submissions/detail/636048077/) should just use simple interval merge.
 
 ### 1.1 Meeting Rooms II
  - [link](https://leetcode.com/problems/meeting-rooms-ii/)
