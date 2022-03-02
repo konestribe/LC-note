@@ -1,7 +1,25 @@
 
+# 1. Using dfs solving math questions
+By simplify main questions into sub questions, we will be able to recursively get our result
+## 1.1 power x n
+return x^n with only basic calculation operations
+We should consider using DFS to quickly convert questions into sub questions
+```java
+    public double myPow(double x, int n) {
+        return dfs(x, (long)n);
+    }
+    
+    private double dfs(double x, long n) {
+        if(n == 0) return 1;
+        if(n < 0) {
+            n = -1 * n;
+            x = 1 / x;
+        }
+        return n%2 == 0? dfs(x * x, n/2) : x * dfs(x * x, n/2);
+    }
+```
 
-
-### 1. largest common factor
+## 1.2 largest common factor
 - if a or b is zero, we return non-zero elements, because everything divides zero
 ```
 public int gcd(int a, int b) { 
@@ -28,6 +46,7 @@ public int gcd(int a, int b) {
 }
 ```
 
+--------------------------------------------------------------------------------------------------------------
 
 ### 2. rectangle area sum
 - give a set of points, check if we can form rectangle/find max area/min area
