@@ -8,6 +8,11 @@ We usually use BFS tackling questions that are asking for minimal steps / distan
 # 2. DFS
 DFS usually used for tracking possibilities (yes or no). It can be used for detecting loop, checking permutations, etc.
  - DFS is long and narrow. Time complexity is also O(v+e)
+
+Below are some normal hacks used for backtracking
+ - Use `Integer` to dedup. 
+   - Sometimes when we are using integer tracking if visited, instead of pre-assigning all values to -1, we can use Integer class and check if value is `null` 
+
 ## 2.1 Recover BST
 Two nodes are swapped by mistake. We need to adjust the seq of two nodes to make it valid. If we use extra space, we can actually run an inorder tranverse, we will just know the wrong nodes position and adjust their values. If we want to finish it in constant space, we need to know prev and cur nodes to make judgement
   - practise: LC 99 recover bst
