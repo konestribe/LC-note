@@ -61,7 +61,36 @@ Alternatively, we should realize that if each interval has no priority, we can s
         return ret;
     }
  ```
-
+### 1.3 calendar
+ - [link](https://leetcode.com/problems/my-calendar-iii/submissions/)
+ - We are given a series of incoming data, we need to return max overlapped interval each time we were fed by a new interval input
+ - Trivially, we can make `book()` a O(n) solution based on previous treeMap strategy. We can insert interval, loop over map and check max interval
+ - However, question: **Do we really need to re-visit all intervals again to get an updated max overlapped interval? No.** We only care the interval nearby the input interval, also the intervals that will be wrapped inside our current interval
+ - We will be utilizing `subMap()` function for treeMap, only looping through those items, update the result
+ - Notice for below condition: `tmap.put(end, next == null ? 0 : tmap.get(next));`, for end index, we also use floor, as
+   - ceiling here does not make sense, as next interval can be inc / dec non-deterministic.
+   - prev will be increased later with `subMap()`. After modification, we will achieve val(nxt-1) -1 = val(nxt)
+   ```java
+    TreeMap<Integer, Integer> tmap;
+    int max;
+    public MyCalendarThree() {
+        tmap = new TreeMap<>();
+        max = 0;
+    }
+    
+    public int book(int start, int end) {
+        Integer prev = tmap.floorKey(start);
+        Integer next = tmap.floorKey(end);
+        tmap.put(start, prev == null ? 0 : tmap.get(prev));
+        tmap.put(end, next == null ? 0 : tmap.get(next));
+        for(int key: tmap.subMap(start, end).keySet()) {
+            int val = tmap.get(key);
+            tmap.put(key, val+1);
+            max = Math.max(max, val+1);
+        }
+        return max;
+    }
+   ```
 
 
 ## 2. Handling interval insertion / deletion with Heap
