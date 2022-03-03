@@ -45,48 +45,6 @@ public int gcd(int a, int b) {
     return b > 0?gcd(b, a % b):a;
 }
 ```
-# 2. Two dimentional finding optimal value / condition
-In this kinds of question, we will be given an input with 2 dimention, we are being asked for optimal value / condition all along the path
-## 2.1 1937. Maximum Number of Points with Cost
- - [link](https://leetcode.com/problems/maximum-number-of-points-with-cost/)
- - We are given a 2D array, and moving from top to bottom. When moving down, we will be adding up sum with penalty, which is the col diff between prev val and cur val.
- - Trivially, we can dp it, and for each row, we do n^2 scan checking max value for a single cell.
- - However, we can notice either from left side or right side (accordingly we move right or left), if a value is optimal, no matter how far we move in the direction, it will always be the optimal choice comparing to other cells exists for comparison, except for newly added node when we are moving the evaluation cell.
- - With above fact, we can create leftMax / rightMax array storing this information, and compute maximum by O(n)
- ```java
-     public long maxPoints(int[][] points) {
-        int m = points.length;
-        int n = points[0].length;
-        long[][] dp = new long[m][n];
-        long ret = 0;
-        for(int i = 0; i < n; i++) {
-            dp[0][i] = (long)points[0][i];
-            ret = Math.max(ret, dp[0][i]);
-        }
-        
-        for(int i = 1; i < m; i++) {
-            int[] lftMax = new int[n];
-            int[] rgtMax = new int[n];
-            lftMax[0] = 0;
-            rgtMax[n-1] = n-1;
-            for(int k = 1; k < n; k++) {
-                long curMax = dp[i-1][lftMax[k-1]];
-                lftMax[k] = curMax-(k - lftMax[k-1]) >= dp[i-1][k] ? lftMax[k-1] : k;
-            }
-            for(int k = n-2; k >= 0; k--) {
-                long curMax = dp[i-1][rgtMax[k+1]];
-                rgtMax[k] = curMax-(rgtMax[k+1] - k) >= dp[i-1][k] ? rgtMax[k+1] : k;
-            }
-            for(int j = 0; j < n; j++) {
-                dp[i][j] = Math.max(dp[i-1][lftMax[j]] - (j - lftMax[j]), 
-                                   dp[i-1][rgtMax[j]] - (rgtMax[j] - j)) + points[i][j];
-                ret = Math.max(ret, dp[i][j]);
-            }
-        }
-        return ret;
-    }
- ```
-
 
 --------------------------------------------------------------------------------------------------------------
 
