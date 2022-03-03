@@ -1,5 +1,91 @@
 
+# 1. Two dimentional finding optimal value / condition
+In this kinds of question, we will be given an input with 2 dimention, we are being asked for optimal value / condition all along the path
+## 1.1 1937. Maximum Number of Points with Cost
+ - [link](https://leetcode.com/problems/maximum-number-of-points-with-cost/)
+ - We are given a 2D array, and moving from top to bottom. When moving down, we will be adding up sum with penalty, which is the col diff between prev val and cur val.
+ - Trivially, we can dp it, and for each row, we do n^2 scan checking max value for a single cell.
+ - However, we can notice either from left side or right side (accordingly we move right or left), if a value is optimal, no matter how far we move in the direction, it will always be the optimal choice comparing to other cells exists for comparison, except for newly added node when we are moving the evaluation cell.
+ - With above fact, we can create leftMax / rightMax array storing this information, and compute maximum by O(n)
+ ```java
+     public long maxPoints(int[][] points) {
+        int m = points.length;
+        int n = points[0].length;
+        long[][] dp = new long[m][n];
+        long ret = 0;
+        for(int i = 0; i < n; i++) {
+            dp[0][i] = (long)points[0][i];
+            ret = Math.max(ret, dp[0][i]);
+        }
+        
+        for(int i = 1; i < m; i++) {
+            int[] lftMax = new int[n];
+            int[] rgtMax = new int[n];
+            lftMax[0] = 0;
+            rgtMax[n-1] = n-1;
+            for(int k = 1; k < n; k++) {
+                long curMax = dp[i-1][lftMax[k-1]];
+                lftMax[k] = curMax-(k - lftMax[k-1]) >= dp[i-1][k] ? lftMax[k-1] : k;
+            }
+            for(int k = n-2; k >= 0; k--) {
+                long curMax = dp[i-1][rgtMax[k+1]];
+                rgtMax[k] = curMax-(rgtMax[k+1] - k) >= dp[i-1][k] ? rgtMax[k+1] : k;
+            }
+            for(int j = 0; j < n; j++) {
+                dp[i][j] = Math.max(dp[i-1][lftMax[j]] - (j - lftMax[j]), 
+                                   dp[i-1][rgtMax[j]] - (rgtMax[j] - j)) + points[i][j];
+                ret = Math.max(ret, dp[i][j]);
+            }
+        }
+        return ret;
+    }
+ ```
+## 1.2 Maximum square
+ - [link](https://leetcode.com/submissions/detail/157012344/)
+ - We are given a 2D array containing 1 or 0. We need to return max area containing 1. 
+ - Trivially, we can keep a 1D dp array counting 1's for prev area. Then we scan through this 1D array for each round, do a left/right expand to identifying max length for the possible square.
+ - However, above will have O(m*n^2) time complexity. Instead we can do a direct DP
+ - The idea would be we check above, left, and top-left cell what is the min value, and add one if current is a 1 cell.
+ ```java
+     public int maximalSquare(char[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return 0;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] dp = new int[rows][cols];
+        int max = 0;
+        for(int i = 0;i < rows;i++) {
+            dp[i][0] = matrix[i][0]=='0'?0:1;
+            max = Math.max(max, dp[i][0]);
+        }
+        for(int i = 0;i < cols;i++) {
+            dp[0][i] = matrix[0][i]=='0'?0:1;
+            max = Math.max(max, dp[0][i]);
+        }
+        
+        for(int i = 1;i < rows;i++) {
+            for(int j = 1;j < cols;j++) {
+                if(matrix[i][j] == '0') {
+                    dp[i][j] = 0;
+                    continue;
+                }
+                int min = Math.min(Math.min(dp[i][j-1],dp[i-1][j]),dp[i-1][j-1]);
+                if(min == 0) {
+                    dp[i][j] = 1;
+                    max = Math.max(max, dp[i][j]);
+                    continue;
+                }else {
+                    dp[i][j] = min+1;
+                    max = Math.max(max, dp[i][j]*dp[i][j]);
+                }
+            }
+        }
+        return max;
+    }
+ ```
 
+
+
+--------------------------------------------------------------------------------------------------------------------
 ### 1. probabilities
 - practise: LC837 21 GAME
   - maintaining a k size window and dp array store the probability **up to current state**.
