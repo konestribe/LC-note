@@ -232,7 +232,32 @@ We will be asking if there are any string match can be made from a candidate lis
         return false;
     }
    ```
-
+---------------------------------------------------------------------------------------------------------------------
+## 6. String fit Screen
+We will be asking to fit string onto screen with given width. We are asked how many occurrence of string can be fit to the screen.
+We should think about having an infinite length of string. We keep an pointer to track the start for next line. 
+If the split is the word itself, we move forward pointer until the prev of pointer is a space
+## 6.1 418. Sentence Screen Fitting
+ - [link](https://leetcode.com/problems/sentence-screen-fitting/)
+ - Same as description in main section
+ ```java
+ public int wordsTyping(String[] sentence, int rows, int cols) {
+        String s = String.join(" ", sentence) + " ";
+        int pt = 0;
+        for(int i = 0; i < rows; i++) {
+            pt += cols;
+            if(s.charAt(pt % s.length()) == ' ') {
+                // full split,  move to next line
+                pt++;
+            } else{
+                while(pt > 0 && s.charAt((pt-1)%s.length()) != ' ') {
+                    pt--;
+                }
+            }
+        }
+        return pt / s.length();
+    }
+ ``
 
 
 <Below are notes before 2022>
