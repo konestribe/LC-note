@@ -237,7 +237,7 @@ We will be asking if there are any string match can be made from a candidate lis
 We will be asking to fit string onto screen with given width. We are asked how many occurrence of string can be fit to the screen.
 We should think about having an infinite length of string. We keep an pointer to track the start for next line. 
 If the split is the word itself, we move forward pointer until the prev of pointer is a space
-## 6.1 418. Sentence Screen Fitting
+### 6.1 418. Sentence Screen Fitting
  - [link](https://leetcode.com/problems/sentence-screen-fitting/)
  - Same as description in main section
  ```java
