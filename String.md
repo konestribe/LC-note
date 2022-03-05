@@ -257,7 +257,7 @@ If the split is the word itself, we move forward pointer until the prev of point
         }
         return pt / s.length();
     }
- ``
+ ```
 
 
 <Below are notes before 2022>
