@@ -86,7 +86,7 @@ In this kinds of question, we will be given an input with 2 dimention, we are be
 # 2. Permutation related DP
 This kinds of question usually given a simple input with number of object, with certain condition constraining the permutation. We are asked to return all possible combinations (count). Ususally the answer will be large, and we are asked to mod the result by 10e9+7.
 As from classic DP strategy, we are increasing counters 1 by 1. By solving sub problems and using sub conditions to contribute to final goals, we can reach out to n
-## 2.0 Count All Valid Pickup and Delivery Options
+## 2.1 Count All Valid Pickup and Delivery Options
 This question given n order, each order we have to first pick up the deliver. We should bottom it up by adding order one by one
  - [link](https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/)
  - each time when we are inserting pair, we have i+1 / i+2 more ways based on previous conditions.
