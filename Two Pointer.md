@@ -1,9 +1,9 @@
 # Two Pointer
 Two pointer usually used for greedy questions. There are couple different scenarios, but all of them require some "stack-like" solutions, discarding previous completed state by manipulating pointers and moving forward.
 
-## Moving pointers from both side
+## 1. Moving pointers from both side
 This kinds of question usually asks max/min area covered by index combination. We should be utilizing some conditions to discard some part of area scanned by 1 pointer until both of them reach.
-### 11. Container With Most Water
+### 1.1. Container With Most Water
  - practise: [link](https://leetcode.com/problems/container-with-most-water/)
  - Solution
    - Given a list of height, we should return largest area covered by lines. The idea would be starting from both side, and calculating area. Meanwhile, we need to keep large height and moving the other one to be inner height. This is due to the greedy condition: If two points with smaller distance, they must need to have larger height to generate a large area. As a result, we only moving smaller height hoping to find a larger inner height
@@ -23,9 +23,10 @@ This kinds of question usually asks max/min area covered by index combination. W
     }
    ```
 
-## Moving pointers from one side
+## 2.Moving pointers from one side
 Normally we use both pointer to scan array twice, and utilize slow pointer to track intermediate state
-### 2062. Count Vowel Substrings of a String
+Sometimes, instead of moving pointers one by one, we can move it all at once to next occurrence to simplify the code logics.
+### 2.1 Count Vowel Substrings of a String
  - practise: [link](https://leetcode.com/problems/count-vowel-substrings-of-a-string/)
  - Solution
    - We need to count number of continuous substrings contain all vowels in a string. For example: "cuaieuouac", we will have `uaieuo`, `uaieuou`, `ieuoua`, etc
@@ -61,3 +62,30 @@ Normally we use both pointer to scan array twice, and utilize slow pointer to tr
         return ret;
     }
    ```
+### 2.2 777. Swap Adjacent in LR String
+- [link](https://leetcode.com/problems/swap-adjacent-in-lr-string/)
+- Sometimes we can moving both pointers together until they reach to next evaluation points together
+- We need to check by moving 'R' to right or 'L' to left, if we can make s1 to be s2
+```java
+    public boolean canTransform(String start, String end) {
+        if(start.length() != end.length()) return false;
+        int i = 0, j = 0,len = start.length();
+        while(i <len && j < len) {
+            while( i < len && start.charAt(i) == 'X') {
+                i++;
+            }
+            while( j < len &&end.charAt(j) == 'X') {
+                j++;
+            } 
+            if(i==len && j == len) return true;
+            if(i==len || j==len) return false;
+            if(start.charAt(i) != end.charAt(j)) return false;
+            if(i > j && start.charAt(i) == 'R') return false;
+            if(i < j && start.charAt(i) == 'L') return false;
+            i++;
+            j++;
+        }
+        return true;
+    }
+``` 
+   
