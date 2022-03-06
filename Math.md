@@ -1,3 +1,32 @@
+# 1. 2D array finding area / count
+There are some constraints which could be used to optimize the 2D array questions, such as
+ - Use 2 points to define rectangle position. By settling down diangonal points for a rectangle, we can check if a rectangle exists
+## 1.1 Minimum Area Rectangle
+ - [link](https://leetcode.com/submissions/detail/654048497/)
+ - Trivially, we can settle down 2 points, then use line condition to check the other two. 
+ - However, we can also trying to settle down rectangle area by fixing 2 diagonal points, and the time complexity will be O(n^2)
+ ```java
+     public int minAreaRect(int[][] points) {
+        Map<Integer, Set<Integer>> map = new HashMap(); //x -> y's
+        for(int[] p: points) {
+            map.putIfAbsent(p[0], new HashSet());
+            map.get(p[0]).add(p[1]);
+        }
+        int ret = Integer.MAX_VALUE;
+        for(int[] i: points) {
+            for(int[] j: points) {
+                if(i[0] == j[0] || i[1] == j[1]) continue;
+                if(!map.get(i[0]).contains(j[1]) || !map.get(j[0]).contains(i[1])) continue;
+                ret = Math.min(ret, Math.abs(i[0]-j[0])*Math.abs(i[1]-j[1]));
+            }
+        }
+        return ret == Integer.MAX_VALUE?0:ret;
+    }
+ ```
+
+
+
+--------------------------------------------------------------------------------
 
 # 1. Using dfs solving math questions
 By simplify main questions into sub questions, we will be able to recursively get our result
