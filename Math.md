@@ -28,9 +28,9 @@ There are some constraints which could be used to optimize the 2D array question
 
 --------------------------------------------------------------------------------
 
-# 1. Using dfs solving math questions
+# 2. Using dfs solving math questions
 By simplify main questions into sub questions, we will be able to recursively get our result
-## 1.1 power x n
+## 2.1 power x n
 return x^n with only basic calculation operations
 We should consider using DFS to quickly convert questions into sub questions
 ```java
@@ -48,7 +48,7 @@ We should consider using DFS to quickly convert questions into sub questions
     }
 ```
 
-## 1.2 largest common factor
+## 2.2 largest common factor
 - if a or b is zero, we return non-zero elements, because everything divides zero
 ```
 public int gcd(int a, int b) { 
@@ -74,6 +74,37 @@ public int gcd(int a, int b) {
     return b > 0?gcd(b, a % b):a;
 }
 ```
+
+--------------------------------------------------------------------------------
+
+# 3. flipping 2D arrays
+We need to realize that sometimes certain action can only be taken once so that we rely on other constrains to reach to optimal target
+## 3.1 2128. Remove All Ones With Row and Column Flips
+ - [link](https://leetcode.com/problems/remove-all-ones-with-row-and-column-flips/)
+ - We need to flip either row or col such that we can make all cell to be 0
+ - from analysis, we figure out we can only flip cols once, so as rows
+ ```java
+ public boolean removeOnes(int[][] grid) {
+        // analyse first row, flip the col that has 1        
+        for(int i = 0; i < grid[0].length; i++) {
+            if(grid[0][i] == 0) continue;
+            for(int j = 0; j < grid.length; j++) {
+                grid[j][i] = 1 - grid[j][i];
+            }
+        }
+        // from then on, we can only flip later rows
+        for(int i = 1; i < grid.length; i++) {
+            int num = grid[i][0];
+            for(int j = 1; j < grid[0].length; j++) {
+                if(grid[i][j] != num) return false;
+            }
+        }
+        return true;
+    }
+ ```
+
+
+
 
 --------------------------------------------------------------------------------------------------------------
 
