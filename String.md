@@ -70,6 +70,8 @@ Finding longest increasing substring. Intuitively, we can O(n^2) with dp to sear
 # 3. non-continous substring with optimized condition
 If question is not asking for contiguous substring, when it comes to optimized conditions, we can think about below data structures
  - Stack: stack can hold intermediate results **in sequence** based on certain criteria. 
+ - BinarySearch: If we can record the index for all chars in an array, we could know if we will be able to form up certain non-continuous substring
+ - 
 ## 3.1 LC Smallest Subsequence of Distinct Characters
  - Practise: [link](https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/)
  - Solutions:
@@ -100,6 +102,50 @@ If question is not asking for contiguous substring, when it comes to optimized c
         return sb.reverse().toString();
     }
    ```
+## 3.2 792 Number of Matching Subsequences
+We are given a long main string, and an array of short strings, we need to return how many of those short strings can be non-continuous substring for long main string.
+ - [link](https://leetcode.com/problems/number-of-matching-subsequences/)
+ - Trivially, we can scan each word once, and comparing the word with s using greedy match (2 pointer). The time complexity is O(mn), m is s length, n is word count.
+ - As we being told, m could be quite long. As a result, it could be quite expensive for each w we scan whole s. Instead, we can store the index for each char for s, and performing binarySearch when scanning each w. The time complexity becomes O(nklog(m)), with k to be average length of w.
+ - A more advanced solution is instead of scanning s beforehand, we scanning w, and storing their head. When scanning s with it's char, we alter this particular char's string, moving w to other buckets. If any w running out of index, we know this is a subsequence.
+ ```java
+     class Node{
+        char[] arr;
+        int idx;
+        public Node(String s) {
+            arr = s.toCharArray();
+            idx = 0;
+        }
+    }
+    // O(n)
+    public int numMatchingSubseq(String s, String[] words) {
+        Queue<Node>[] list = new Queue[26];
+        for(String w: words) {
+            char hd = w.charAt(0);
+            if(list[hd-'a'] == null) list[hd-'a'] = new LinkedList<>();
+            list[hd-'a'].add(new Node(w));
+        }
+        int ret = 0;
+        for(char c: s.toCharArray()) {
+            if(list[c-'a'] == null) continue;
+            Queue<Node> q = list[c-'a'];
+            for(int size = q.size(); size > 0; size--) {
+                Node cur = q.poll();
+                cur.idx++;
+                if(cur.idx == cur.arr.length) ret++;
+                else{
+                    char hd = cur.arr[cur.idx];
+                    if(list[hd-'a'] == null) list[hd-'a'] = new LinkedList<>();
+                    list[hd-'a'].add(cur);
+                }
+            }
+        }
+        return ret;
+     }
+ ```
+   
+   
+   
 -----------------------------------------------------------------------------
 # 4. Palidrome
 Strings with below properties:
