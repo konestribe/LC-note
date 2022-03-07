@@ -105,6 +105,41 @@ This question given n order, each order we have to first pick up the deliver. We
     }
  ```
 
+# 3. Reverse dp direction and reuse previous state
+Sometimes the question has constrains which will let us utilize the reversed DP state, such as we find out the min distance to target, with choice of reverting the direction. We can reuse the previous calculated state
+## 3.1 818. Race Car
+ - [link](https://leetcode.com/problems/race-car/)
+ - We are given a target, and we start racing in 0. Each time we can choose to speed up 2x or reverse (speed become 1 again). Return min dis to target.
+ - Trivially, as we are being asked for min distance, we can use BFS to track current dis and speed. We use set to record those visited state. 
+ - However, for DP, we have three conditions: 1) direct met end point. 2) exceed endpoint, `m+1+dp[target-cur]` 3) we reverse back at some point then alter position `m+1+n+1+dp[target-reverse]`
+ ```java
+     public int racecar(int target) {
+        int[] dp = new int[target+1];
+        Arrays.fill(dp, -1);
+        dp[0] = 0;
+        return racecar(target, dp);
+    }
+    
+    private int racecar(int t, int[] dp) {
+        if(dp[t] != -1) return dp[t];
+        int bit = 0; // speed factor, also number of operation
+        int pos = 0;
+        
+        int ret = Integer.MAX_VALUE;
+        for(;pos < t; pos += (1 << bit++)) {
+            int reverse = pos;
+            int r_bit = 0; 
+            for(; reverse > 0; reverse -= (1 << r_bit++)) {
+                ret = Math.min(ret, 
+                               bit + 1 + r_bit + 1 + racecar(t - reverse, dp));
+            }
+        }
+        if(pos == t) ret = Math.min(ret, bit);
+        ret = Math.min(ret, bit + 1 + racecar(pos-t, dp));
+        dp[t] = ret;
+        return ret;
+    }
+ ```
 
 --------------------------------------------------------------------------------------------------------------------
 ### 1. probabilities
