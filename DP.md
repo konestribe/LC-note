@@ -1,6 +1,7 @@
 
-# 1. Two dimentional finding optimal value / condition
-In this kinds of question, we will be given an input with 2 dimention, we are being asked for optimal value / condition all along the path
+# 1. One/Two dimentional finding optimal value / condition
+In this kinds of question, we will be given an input with 2 dimention, we are being asked for optimal value / condition all along the path. Below are some useful strategies
+ - When moving between cols, we track current best by comparing prev best and incoming possibilities (DP),
 ## 1.1 1937. Maximum Number of Points with Cost
  - [link](https://leetcode.com/problems/maximum-number-of-points-with-cost/)
  - We are given a 2D array, and moving from top to bottom. When moving down, we will be adding up sum with penalty, which is the col diff between prev val and cur val.
@@ -82,6 +83,38 @@ In this kinds of question, we will be given an input with 2 dimention, we are be
         return max;
     }
  ```
+ ## 1.3 1477. Find Two Non-overlapping Sub-arrays Each With Target Sum
+ - [link](https://leetcode.com/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum/)
+ - We need to find 2 subarrays which has sum to target independently and with their length to be minimum. All digits are positive
+ - Trivially, we would think about using prefix sum, search for target, and compute length
+ - Then, for min two subarray, we will track the min from left and min for right, meanwhile keep the min from left or updating it
+ ```java
+     public int minSumOfLengths(int[] arr, int target) {
+        int sum = 0;
+        Map<Integer, Integer> map = new HashMap<>(); // sum, index
+        map.put(0, -1);
+        for(int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+            map.put(sum, i);
+        }
+        int lftMin = Integer.MAX_VALUE;
+        int ret = Integer.MAX_VALUE;
+        sum = 0;
+        for(int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+            if(map.containsKey(sum - target)) {
+                lftMin = Math.min(lftMin, i - map.get(sum- target));
+            }
+            if(map.containsKey(sum + target) 
+               && lftMin != Integer.MAX_VALUE) {
+               ret = Math.min(ret, lftMin + map.get(sum + target) - i);
+            }
+        }
+        return ret == Integer.MAX_VALUE ? -1 : ret;
+    }
+ ```
+ 
+ 
 
 # 2. Permutation related DP
 This kinds of question usually given a simple input with number of object, with certain condition constraining the permutation. We are asked to return all possible combinations (count). Ususally the answer will be large, and we are asked to mod the result by 10e9+7.
